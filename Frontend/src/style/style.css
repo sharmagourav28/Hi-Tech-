@@ -1,0 +1,173 @@
+body,
+html {
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+  background: #f8f9fa;
+  height: 100%;
+  width: 100%;
+}
+
+/* Container covering the entire page */
+.login-page {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  background: url(../assets/bg.jpg) no-repeat center center/cover;
+  position: relative;
+  padding-left: 100px;
+  padding-right: 100px;
+}
+
+/* Semi-transparent background for the form container */
+.form-section {
+  flex: 1;
+  padding: 60px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.welcome-section {
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: rgb(27, 24, 24);
+}
+
+/* Welcome Text Styles */
+.welcome-title {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+.welcome-text {
+  font-size: 18px;
+  margin-bottom: 40px;
+  line-height: 1.6;
+}
+
+/* Social Links */
+.social-links {
+  display: flex;
+  gap: 20px;
+  margin-left: 200px;
+}
+
+.social-icon {
+  background: rgba(67, 65, 65, 0.3);
+  padding: 15px;
+  border-radius: 50%;
+  color: rgb(17, 16, 16);
+  text-decoration: none;
+  font-size: 20px; /* Size of the icons */
+  transition: background 0.3s, color 0.3s;
+}
+
+.social-icon:hover {
+  background: rgba(55, 50, 50, 0.5);
+  color: #ff6600; /* Change color on hover */
+}
+
+/* Login Form Styles */
+.login-form {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.form-title {
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+/* Dropdown Styles */
+.form-input {
+  width: 100%;
+  padding: 15px;
+  margin: 15px 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.form-input:focus {
+  border-color: #007bff;
+  box-shadow: 0 5px 10px rgba(0, 123, 255, 0.2);
+}
+
+.form-remember {
+  display: flex;
+  align-items: center;
+  margin: 15px 0;
+}
+
+.form-remember input {
+  margin-right: 10px;
+}
+
+.form-button {
+  background: #ff6600;
+  color: white;
+  padding: 15px;
+  border: none;
+  border-radius: 5px;
+  width: 100%;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.form-button:hover {
+  background: #e65c00;
+}
+
+.forgot-password {
+  margin-top: 15px;
+  text-align: center;
+  font-size: 16px;
+  color: #007bff;
+  cursor: pointer;
+}
+
+.forgot-password:hover {
+  text-decoration: underline;
+}
+
+.form-footer-text {
+  margin-top: 30px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.form-footer-text a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.form-footer-text a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .login-page {
+    flex-direction: column;
+  }
+
+  .welcome-section {
+    height: 40vh;
+    text-align: center;
+  }
+
+  .form-section {
+    height: 60vh;
+    padding: 30px;
+  }
+
+  .login-form {
+    width: 100%;
+  }
+}
