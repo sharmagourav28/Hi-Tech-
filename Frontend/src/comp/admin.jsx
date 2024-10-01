@@ -36,19 +36,38 @@ const Admin = () => {
   const handleGetCertificate = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/hydro/certificate/${id}`
+        `http://localhost:5000/api/hydro/certificate/${id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/pdf",
+          },
+        }
       );
+
       if (!response.ok) {
         throw new Error("Failed to generate certificate");
       }
+
+      // Create a Blob from the PDF stream
       const blob = await response.blob();
+
+      // Create a URL for the Blob
       const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `${id}_certificate.pdf`; // Name the downloaded file
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
+
+      // Create a temporary link to download the file
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `${id}_certificate.pdf`);
+
+      // Append the link to the body
+      document.body.appendChild(link);
+
+      // Trigger the download by simulating a click
+      link.click();
+
+      // Remove the link from the DOM
+      document.body.removeChild(link);
     } catch (error) {
       console.error("Error downloading certificate:", error);
     }
@@ -57,20 +76,20 @@ const Admin = () => {
   return (
     <>
       <Header />
-      <div className="p-6 bg-gray-50">
-        <h2 className="text-3xl font-bold mb-6 text-center">
+      <div className="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 min-h-screen w-full">
+        <h2 className="text-4xl font-extrabold mb-8 text-center text-indigo-600">
           Hydro Test Records
         </h2>
 
         {/* Filter and Sort Controls */}
-        <div className="mb-6 flex justify-between items-center">
-          <div className="flex space-x-4">
+        <div className="mb-8 flex flex-wrap justify-between items-center bg-white p-4 rounded-lg shadow-md">
+          <div className="flex space-x-6 items-center">
             <div className="flex items-center">
-              <label className="mr-2">Sort By:</label>
+              <label className="mr-2 font-semibold">Sort By:</label>
               <select
                 onChange={(e) => setSortField(e.target.value)}
                 value={sortField}
-                className="p-2 border border-gray-300 rounded"
+                className="p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-indigo-300"
               >
                 <option value="testDate">Test Date</option>
                 <option value="htmfPartNumber">HTMF Part Number</option>
@@ -80,11 +99,11 @@ const Admin = () => {
             </div>
 
             <div className="flex items-center">
-              <label className="mr-2">Order:</label>
+              <label className="mr-2 font-semibold">Order:</label>
               <select
                 onChange={(e) => setSortOrder(e.target.value)}
                 value={sortOrder}
-                className="p-2 border border-gray-300 rounded"
+                className="p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-indigo-300"
               >
                 <option value="asc">Ascending</option>
                 <option value="desc">Descending</option>
@@ -92,11 +111,11 @@ const Admin = () => {
             </div>
 
             <div className="flex items-center">
-              <label className="mr-2">Filter By:</label>
+              <label className="mr-2 font-semibold">Filter By:</label>
               <select
                 onChange={(e) => setFilterField(e.target.value)}
                 value={filterField}
-                className="p-2 border border-gray-300 rounded"
+                className="p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-indigo-300"
               >
                 <option value="">None</option>
                 <option value="htmfPartNumber">HTMF Part Number</option>
@@ -108,13 +127,13 @@ const Admin = () => {
                 placeholder="Filter value"
                 value={filterValue}
                 onChange={(e) => setFilterValue(e.target.value)}
-                className="p-1 border border-gray-300 rounded"
+                className="ml-2 p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-indigo-300"
               />
             </div>
 
             <button
               onClick={() => setFilterValue("")}
-              className="bg-red-500 text-white p-2 rounded hover:bg-red-600 transition"
+              className="bg-red-500 text-white p-2 rounded-lg shadow-md hover:bg-red-600 transition"
             >
               Clear Filter
             </button>
@@ -125,45 +144,68 @@ const Admin = () => {
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white border rounded-lg shadow-lg">
             <thead>
-              <tr className="bg-gray-200">
-                <th className="px-4 py-2">Test Date</th>
-                <th className="px-4 py-2">HTMF Part Number</th>
-                <th className="px-4 py-2">Customer Part Number</th>
-                <th className="px-4 py-2">Serial Number</th>
-                <th className="px-4 py-2">Hydro Pressure</th>
-                <th className="px-4 py-2">Start Time</th>
-                <th className="px-4 py-2">End Time</th>
-                <th className="px-4 py-2">Welder Code</th>
-                <th className="px-4 py-2">Operator</th>
-                <th className="px-4 py-2">Witness Bay</th>
-                <th className="px-4 py-2">Result</th>
-                <th className="px-4 py-2">Actions</th>
+              <tr className="bg-gray-100">
+                <th className="px-4 py-3 font-semibold">Test Date</th>
+                <th className="px-4 py-3 font-semibold">HTMF Part Number</th>
+                <th className="px-4 py-3 font-semibold">
+                  Customer Part Number
+                </th>
+                <th className="px-4 py-3 font-semibold">Serial Number</th>
+                <th className="px-4 py-3 font-semibold">Hydro Pressure</th>
+                <th className="px-4 py-3 font-semibold">Start Time</th>
+                <th className="px-4 py-3 font-semibold">End Time</th>
+                <th className="px-4 py-3 font-semibold">Welder Code</th>
+                <th className="px-4 py-3 font-semibold">Operator</th>
+                <th className="px-4 py-3 font-semibold">Witness Bay</th>
+                <th className="px-4 py-3 font-semibold">Result</th>
+                <th className="px-4 py-3 font-semibold">Actions</th>
               </tr>
             </thead>
             <tbody>
               {hydroTests.map((test) => (
                 <tr
                   key={test._id}
-                  className={`bg-white border-b hover:bg-gray-100 transition ${
-                    test.passFail === "Fail" ? "bg-red-100" : ""
+                  className={`border-b hover:bg-gray-50 transition ${
+                    test.passFail === "Fail"
+                      ? "bg-red-50 border-l-4 border-red-500"
+                      : ""
                   }`}
                 >
-                  <td className="px-4 py-2">{test.testDate}</td>
-                  <td className="px-4 py-2">{test.htmfPartNumber}</td>
-                  <td className="px-4 py-2">{test.customerPartNumber}</td>
-                  <td className="px-4 py-2">{test.serialNumber}</td>
-                  <td className="px-4 py-2">{test.hydroPressure}</td>
-                  <td className="px-4 py-2">{test.startTime}</td>
-                  <td className="px-4 py-2">{test.endTime}</td>
-                  <td className="px-4 py-2">{test.welderCode}</td>
-                  <td className="px-4 py-2">{test.operator}</td>
-                  <td className="px-4 py-2">{test.witnessBay}</td>
-                  <td className="px-4 py-2">{test.passFail}</td>
-                  <td className="px-4 py-2">
+                  <td className="px-4 py-3">{test.testDate}</td>
+                  <td className="px-4 py-3">{test.htmfPartNumber}</td>
+                  <td className="px-4 py-3">{test.customerPartNumber}</td>
+                  <td className="px-4 py-3">{test.serialNumber}</td>
+                  <td className="px-4 py-3">{test.hydroPressure}</td>
+                  <td className="px-4 py-3">{test.startTime}</td>
+                  <td className="px-4 py-3">{test.endTime}</td>
+                  <td className="px-4 py-3">{test.welderCode}</td>
+                  <td className="px-4 py-3">{test.operator}</td>
+                  <td className="px-4 py-3">{test.witnessBay}</td>
+                  <td
+                    className={`px-4 py-3 ${
+                      test.passFail === "Fail" ? "text-red-600 font-bold" : ""
+                    }`}
+                  >
+                    {test.passFail}
+                  </td>
+                  <td className="px-4 py-3">
                     <button
                       onClick={() => handleGetCertificate(test._id)}
-                      className="bg-blue-500 text-white p-1 rounded hover:bg-blue-600 transition"
+                      className="bg-blue-500 text-white p-2 rounded-lg shadow-md hover:bg-blue-600 transition flex items-center"
                     >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5 mr-1"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path d="M8 12h4V7H8v5z" />
+                        <path
+                          fillRule="evenodd"
+                          d="M4 3a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V3zm2 0v12h8V3H6z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
                       Get Certificate
                     </button>
                   </td>

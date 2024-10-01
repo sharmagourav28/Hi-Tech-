@@ -7,6 +7,7 @@ exports.registerUser = async (req, res) => {
   try {
     const { username, password, role } = req.body;
 
+    // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({ username, password: hashedPassword, role });
 
@@ -35,12 +36,10 @@ exports.loginUser = async (req, res) => {
       { expiresIn: "1h" }
     );
 
-    res
-      .status(200)
-      .json({
-        token,
-        user: { id: user._id, username: user.username, role: user.role },
-      });
+    res.status(200).json({
+      token,
+      user: { id: user._id, username: user.username, role: user.role },
+    });
   } catch (error) {
     res.status(500).json({ message: "Error logging in", error });
   }

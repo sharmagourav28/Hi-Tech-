@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const connectDB = require("./config/db");
 const hydroRoutes = require("./routes/hydroroutes");
 const authRoutes = require("./routes/authRoutes");
+
 dotenv.config();
 const app = express();
 
@@ -17,9 +18,7 @@ app.use(bodyParser.json());
 
 // Routes
 app.use("/api/hydro", hydroRoutes);
-
-// Use the authentication routes
-app.use("/api/auth", authRoutes);
+app.use("/api/auth", authRoutes); // Authentication routes
 
 // Start the server
 const PORT = process.env.PORT || 5000;
@@ -27,6 +26,7 @@ const PORT = process.env.PORT || 5000;
 app.get("/", (req, res) => {
   res.send("API WORKING");
 });
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

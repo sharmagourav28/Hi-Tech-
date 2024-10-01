@@ -1,18 +1,18 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Header = () => {
   const location = useLocation(); // Hook to get the current route
   const navigate = useNavigate();
 
   const handleGetStartedClick = () => {
-    navigate("/"); // Replace '/login' with the path to your login page
+    navigate("/"); // Navigate to the login page or any other route
   };
 
   return (
-    <header className="border-b py-4 px-4 sm:px-10 bg-white tracking-wide relative z-50 w-full">
-      <div className="max-w-7xl w-full mx-auto flex flex-wrap items-center gap-4">
+    <header className="border-b py-4 bg-white tracking-wide fixed top-0 left-0 w-full z-50">
+      <div className="max-w-7xl w-full mx-auto flex flex-wrap items-center gap-4 px-4 sm:px-10">
+        {/* Logo */}
         <a href="javascript:void(0)">
           <img
             src="https://readymadeui.com/readymadeui.svg"
@@ -21,6 +21,7 @@ const Header = () => {
           />
         </a>
 
+        {/* Navigation Menu */}
         <div
           id="collapseMenu"
           className="max-lg:hidden lg:!block max-lg:before:fixed max-lg:before:bg-black max-lg:before:opacity-40 max-lg:before:inset-0 max-lg:before:z-50"
@@ -92,6 +93,7 @@ const Header = () => {
           </ul>
         </div>
 
+        {/* Logout Button */}
         <div className="flex ml-auto">
           <button
             onClick={handleGetStartedClick}
