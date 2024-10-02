@@ -8,6 +8,8 @@ const Admin = () => {
   const [sortOrder, setSortOrder] = useState("asc");
   const [filterField, setFilterField] = useState("");
   const [filterValue, setFilterValue] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const recordsPerPage = 10; // Fixed records per page
 
   useEffect(() => {
     const fetchHydroTests = async () => {
@@ -32,7 +34,17 @@ const Admin = () => {
     fetchHydroTests();
   }, [sortField, sortOrder, filterField, filterValue]);
 
-  // Function to handle certificate download
+  // Calculate the records to display based on the current page
+  const indexOfLastRecord = currentPage * recordsPerPage;
+  const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
+  const currentRecords = hydroTests.slice(
+    indexOfFirstRecord,
+    indexOfLastRecord
+  );
+
+  // Calculate the total number of pages
+  const totalPages = Math.ceil(hydroTests.length / recordsPerPage);
+
   const handleGetCertificate = async (id) => {
     try {
       const response = await fetch(
@@ -49,34 +61,28 @@ const Admin = () => {
         throw new Error("Failed to generate certificate");
       }
 
-      // Create a Blob from the PDF stream
       const blob = await response.blob();
-
-      // Create a URL for the Blob
       const url = window.URL.createObjectURL(blob);
-
-      // Create a temporary link to download the file
       const link = document.createElement("a");
       link.href = url;
       link.setAttribute("download", `${id}_certificate.pdf`);
-
-      // Append the link to the body
       document.body.appendChild(link);
-
-      // Trigger the download by simulating a click
       link.click();
-
-      // Remove the link from the DOM
       document.body.removeChild(link);
     } catch (error) {
       console.error("Error downloading certificate:", error);
     }
   };
 
+  // Function to handle changing pages
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   return (
     <>
       <Header />
-      <div className="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 min-h-screen w-full">
+      <div className="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 min-h-screen w-full mt-10">
         <h2 className="text-4xl font-extrabold mb-8 text-center text-indigo-600">
           Hydro Test Records
         </h2>
@@ -141,7 +147,7 @@ const Admin = () => {
         </div>
 
         {/* Table Display */}
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto w-full">
           <table className="min-w-full bg-white border rounded-lg shadow-lg">
             <thead>
               <tr className="bg-gray-100">
@@ -162,7 +168,7 @@ const Admin = () => {
               </tr>
             </thead>
             <tbody>
-              {hydroTests.map((test) => (
+              {currentRecords.map((test) => (
                 <tr
                   key={test._id}
                   className={`border-b hover:bg-gray-50 transition ${
@@ -213,6 +219,23 @@ const Admin = () => {
               ))}
             </tbody>
           </table>
+        </div>
+
+        {/* Pagination Controls */}
+        <div className="flex justify-center mt-8">
+          {Array.from({ length: totalPages }, (_, index) => (
+            <button
+              key={index}
+              onClick={() => paginate(index + 1)}
+              className={`px-4 py-2 mx-1 border ${
+                index + 1 === currentPage
+                  ? "bg-indigo-500 text-white"
+                  : "bg-white text-indigo-500"
+              } rounded-lg shadow-md hover:bg-indigo-400 transition`}
+            >
+              {index + 1}
+            </button>
+          ))}
         </div>
       </div>
       <Footer />
