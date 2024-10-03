@@ -127,7 +127,7 @@ const Hydro = () => {
   return (
     <>
       <Header />
-      <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12">
+      <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 mt-20">
         <div className="w-full max-w-7xl mx-auto px-4">
           <div className="bg-white shadow-lg sm:rounded-lg px-10 py-8">
             <h1 className="text-3xl font-bold text-center mb-6">

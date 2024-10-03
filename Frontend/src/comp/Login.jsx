@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { FaFacebookF, FaTwitter, FaInstagram } from "react-icons/fa";
+import {
+  FaFacebookF,
+  FaTwitter,
+  FaInstagram,
+  FaEye,
+  FaEyeSlash,
+} from "react-icons/fa"; // Import the eye icons
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -8,6 +14,7 @@ const Login = () => {
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [selectedRole, setSelectedRole] = useState("Admin");
+  const [showPassword, setShowPassword] = useState(false); // State for password visibility
   const navigate = useNavigate();
 
   const credentials = {
@@ -104,14 +111,23 @@ const Login = () => {
               onChange={(e) => setUserId(e.target.value)}
               required
             />
-            <input
-              type="password"
-              className="w-full p-3 md:p-4 mb-4 border border-gray-300 rounded-md focus:border-blue-500 focus:ring focus:ring-blue-200"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+            <div className="relative mb-4">
+              <input
+                type={showPassword ? "text" : "password"} // Toggle between text and password
+                className="w-full p-3 md:p-4 border border-gray-300 rounded-md focus:border-blue-500 focus:ring focus:ring-blue-200"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <button
+                type="button"
+                className="absolute inset-y-0 right-0 flex items-center pr-3"
+                onClick={() => setShowPassword((prev) => !prev)} // Toggle password visibility
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />} {/* Toggle icon */}
+              </button>
+            </div>
             <div className="flex items-center mb-4">
               <input type="checkbox" id="rememberMe" className="mr-2" />
               <label htmlFor="rememberMe" className="text-gray-600">
