@@ -47,35 +47,6 @@ const Admin = () => {
   // Calculate the total number of pages
   const totalPages = Math.ceil(hydroTests.length / recordsPerPage);
 
-  const handleGetCertificate = async (id) => {
-    try {
-      const response = await fetch(
-        `http://localhost:5000/api/hydro/certificate/${id}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/pdf",
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to generate certificate");
-      }
-
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", `${id}_certificate.pdf`);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } catch (error) {
-      console.error("Error downloading certificate:", error);
-    }
-  };
-
   // Function to handle changing pages
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -166,7 +137,6 @@ const Admin = () => {
                 <th className="px-4 py-3 font-semibold">Operator</th>
                 <th className="px-4 py-3 font-semibold">Witness Bay</th>
                 <th className="px-4 py-3 font-semibold">Result</th>
-                <th className="px-4 py-3 font-semibold">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -195,27 +165,6 @@ const Admin = () => {
                     }`}
                   >
                     {test.passFail}
-                  </td>
-                  <td className="px-4 py-3">
-                    <button
-                      onClick={() => handleGetCertificate(test._id)}
-                      className="bg-blue-500 text-white p-2 rounded-lg shadow-md hover:bg-blue-600 transition flex items-center"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5 mr-1"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path d="M8 12h4V7H8v5z" />
-                        <path
-                          fillRule="evenodd"
-                          d="M4 3a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V3zm2 0v12h8V3H6z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      Get Certificate
-                    </button>
                   </td>
                 </tr>
               ))}
