@@ -55,21 +55,24 @@ const Admin = () => {
   return (
     <>
       <Header />
-      <div className="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 min-h-screen w-full mt-10">
+      <div className="p-6 pt-10 bg-gradient-to-r from-blue-50 to-indigo-50 min-h-screen w-full mt-20">
+        {" "}
+        {/* Add margin-top here */}
         <h2 className="text-4xl font-extrabold mb-8 text-center text-indigo-600">
           Hydro Test Records
         </h2>
-
         {/* Filter and Sort Controls */}
-        <div className="mb-8 flex flex-wrap justify-between items-center bg-white p-4 rounded-lg shadow-md">
-          <div className="flex flex-col lg:flex-row lg:space-x-6 space-y-4 lg:space-y-0 items-center w-full lg:w-auto">
+        <div className="mb-8 flex flex-wrap justify-center items-center bg-white p-6 rounded-lg shadow-lg transition-all duration-300 ease-in-out hover:shadow-xl">
+          <div className="flex flex-col lg:flex-row lg:space-x-8 space-y-4 lg:space-y-0 items-center">
             {/* Sort By */}
-            <div className="flex items-center w-full lg:w-auto">
-              <label className="mr-2 font-semibold">Sort By:</label>
+            <div className="flex items-center">
+              <label className="mr-2 font-semibold text-gray-700">
+                Sort By:
+              </label>
               <select
                 onChange={(e) => setSortField(e.target.value)}
                 value={sortField}
-                className="w-full lg:w-auto p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-indigo-300"
+                className="w-full lg:w-auto p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 transition duration-200 ease-in-out"
               >
                 <option value="testDate">Test Date</option>
                 <option value="htmfPartNumber">HTMF Part Number</option>
@@ -79,12 +82,12 @@ const Admin = () => {
             </div>
 
             {/* Order */}
-            <div className="flex items-center w-full lg:w-auto">
-              <label className="mr-2 font-semibold">Order:</label>
+            <div className="flex items-center">
+              <label className="mr-2 font-semibold text-gray-700">Order:</label>
               <select
                 onChange={(e) => setSortOrder(e.target.value)}
                 value={sortOrder}
-                className="w-full lg:w-auto p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-indigo-300"
+                className="w-full lg:w-auto p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 transition duration-200 ease-in-out"
               >
                 <option value="asc">Ascending</option>
                 <option value="desc">Descending</option>
@@ -92,12 +95,14 @@ const Admin = () => {
             </div>
 
             {/* Filter By */}
-            <div className="flex items-center w-full lg:w-auto">
-              <label className="mr-2 font-semibold">Filter By:</label>
+            <div className="flex items-center">
+              <label className="mr-2 font-semibold text-gray-700">
+                Filter By:
+              </label>
               <select
                 onChange={(e) => setFilterField(e.target.value)}
                 value={filterField}
-                className="w-full lg:w-auto p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-indigo-300"
+                className="w-full lg:w-auto p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 transition duration-200 ease-in-out"
               >
                 <option value="">None</option>
                 <option value="htmfPartNumber">HTMF Part Number</option>
@@ -109,38 +114,43 @@ const Admin = () => {
                 placeholder="Filter value"
                 value={filterValue}
                 onChange={(e) => setFilterValue(e.target.value)}
-                className="ml-2 w-full lg:w-auto p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-indigo-300"
+                className="ml-2 w-full lg:w-auto p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 transition duration-200 ease-in-out"
               />
             </div>
 
             {/* Clear Filter Button */}
             <button
               onClick={() => setFilterValue("")}
-              className="w-full lg:w-auto bg-red-500 text-white p-2 rounded-lg shadow-md hover:bg-red-600 transition"
+              className="w-full lg:w-auto bg-red-600 text-white p-2 rounded-lg shadow-md hover:bg-red-700 transition duration-200 ease-in-out"
             >
               Clear Filter
             </button>
           </div>
         </div>
-
         {/* Table Display */}
         <div className="overflow-x-auto w-full">
           <table className="min-w-full bg-white border rounded-lg shadow-lg">
             <thead>
               <tr className="bg-gray-100">
-                <th className="px-4 py-3 font-semibold">Test Date</th>
-                <th className="px-4 py-3 font-semibold">HTMF Part Number</th>
-                <th className="px-4 py-3 font-semibold">
+                <th className="px-2 py-2 font-semibold text-sm">Test Date</th>
+                <th className="px-2 py-2 font-semibold text-sm">
+                  HTMF Part Number
+                </th>
+                <th className="px-2 py-2 font-semibold text-sm">
                   Customer Part Number
                 </th>
-                <th className="px-4 py-3 font-semibold">Serial Number</th>
-                <th className="px-4 py-3 font-semibold">Hydro Pressure</th>
-                <th className="px-4 py-3 font-semibold">Start Time</th>
-                <th className="px-4 py-3 font-semibold">End Time</th>
-                <th className="px-4 py-3 font-semibold">Welder Code</th>
-                <th className="px-4 py-3 font-semibold">Operator</th>
-                <th className="px-4 py-3 font-semibold">Witness Bay</th>
-                <th className="px-4 py-3 font-semibold">Result</th>
+                <th className="px-2 py-2 font-semibold text-sm">
+                  Serial Number
+                </th>
+                <th className="px-2 py-2 font-semibold text-sm">
+                  Hydro Pressure
+                </th>
+                <th className="px-2 py-2 font-semibold text-sm">Start Time</th>
+                <th className="px-2 py-2 font-semibold text-sm">End Time</th>
+                <th className="px-2 py-2 font-semibold text-sm">Welder Code</th>
+                <th className="px-2 py-2 font-semibold text-sm">Operator</th>
+                <th className="px-2 py-2 font-semibold text-sm">Witness Bay</th>
+                <th className="px-2 py-2 font-semibold text-sm">Result</th>
               </tr>
             </thead>
             <tbody>
@@ -153,18 +163,20 @@ const Admin = () => {
                       : ""
                   }`}
                 >
-                  <td className="px-4 py-3">{test.testDate}</td>
-                  <td className="px-4 py-3">{test.htmfPartNumber}</td>
-                  <td className="px-4 py-3">{test.customerPartNumber}</td>
-                  <td className="px-4 py-3">{test.serialNumber}</td>
-                  <td className="px-4 py-3">{test.hydroPressure}</td>
-                  <td className="px-4 py-3">{test.startTime}</td>
-                  <td className="px-4 py-3">{test.endTime}</td>
-                  <td className="px-4 py-3">{test.welderCode}</td>
-                  <td className="px-4 py-3">{test.operator}</td>
-                  <td className="px-4 py-3">{test.witnessBay}</td>
+                  <td className="px-2 py-2 text-sm">{test.testDate}</td>
+                  <td className="px-2 py-2 text-sm">{test.htmfPartNumber}</td>
+                  <td className="px-2 py-2 text-sm">
+                    {test.customerPartNumber}
+                  </td>
+                  <td className="px-2 py-2 text-sm">{test.serialNumber}</td>
+                  <td className="px-2 py-2 text-sm">{test.hydroPressure}</td>
+                  <td className="px-2 py-2 text-sm">{test.startTime}</td>
+                  <td className="px-2 py-2 text-sm">{test.endTime}</td>
+                  <td className="px-2 py-2 text-sm">{test.welderCode}</td>
+                  <td className="px-2 py-2 text-sm">{test.operator}</td>
+                  <td className="px-2 py-2 text-sm">{test.witnessBay}</td>
                   <td
-                    className={`px-4 py-3 ${
+                    className={`px-2 py-2 text-sm ${
                       test.passFail === "Fail" ? "text-red-600 font-bold" : ""
                     }`}
                   >
@@ -175,7 +187,6 @@ const Admin = () => {
             </tbody>
           </table>
         </div>
-
         {/* Pagination Controls */}
         <div className="flex justify-center mt-8">
           {Array.from({ length: totalPages }, (_, index) => (

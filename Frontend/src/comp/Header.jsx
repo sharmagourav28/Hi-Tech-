@@ -21,11 +21,9 @@ const Header = () => {
     <header className="border-b py-4 bg-white tracking-wide fixed top-0 left-0 w-full z-50">
       <div className="max-w-7xl w-full mx-auto flex flex-wrap items-center gap-4 px-4 sm:px-10">
         <a href="javascript:void(0)">
-          <img
-            src="https://readymadeui.com/readymadeui.svg"
-            alt="logo"
-            className="w-40"
-          />
+          <h3 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500 py-4">
+            HiTech System
+          </h3>
         </a>
         <div id="collapseMenu" className="max-lg:hidden lg:!block">
           <ul className="lg:flex lg:ml-12 lg:gap-x-6">
