@@ -62,13 +62,14 @@ const Admin = () => {
 
         {/* Filter and Sort Controls */}
         <div className="mb-8 flex flex-wrap justify-between items-center bg-white p-4 rounded-lg shadow-md">
-          <div className="flex space-x-6 items-center">
-            <div className="flex items-center">
+          <div className="flex flex-col lg:flex-row lg:space-x-6 space-y-4 lg:space-y-0 items-center w-full lg:w-auto">
+            {/* Sort By */}
+            <div className="flex items-center w-full lg:w-auto">
               <label className="mr-2 font-semibold">Sort By:</label>
               <select
                 onChange={(e) => setSortField(e.target.value)}
                 value={sortField}
-                className="p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-indigo-300"
+                className="w-full lg:w-auto p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-indigo-300"
               >
                 <option value="testDate">Test Date</option>
                 <option value="htmfPartNumber">HTMF Part Number</option>
@@ -77,24 +78,26 @@ const Admin = () => {
               </select>
             </div>
 
-            <div className="flex items-center">
+            {/* Order */}
+            <div className="flex items-center w-full lg:w-auto">
               <label className="mr-2 font-semibold">Order:</label>
               <select
                 onChange={(e) => setSortOrder(e.target.value)}
                 value={sortOrder}
-                className="p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-indigo-300"
+                className="w-full lg:w-auto p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-indigo-300"
               >
                 <option value="asc">Ascending</option>
                 <option value="desc">Descending</option>
               </select>
             </div>
 
-            <div className="flex items-center">
+            {/* Filter By */}
+            <div className="flex items-center w-full lg:w-auto">
               <label className="mr-2 font-semibold">Filter By:</label>
               <select
                 onChange={(e) => setFilterField(e.target.value)}
                 value={filterField}
-                className="p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-indigo-300"
+                className="w-full lg:w-auto p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-indigo-300"
               >
                 <option value="">None</option>
                 <option value="htmfPartNumber">HTMF Part Number</option>
@@ -106,13 +109,14 @@ const Admin = () => {
                 placeholder="Filter value"
                 value={filterValue}
                 onChange={(e) => setFilterValue(e.target.value)}
-                className="ml-2 p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-indigo-300"
+                className="ml-2 w-full lg:w-auto p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-indigo-300"
               />
             </div>
 
+            {/* Clear Filter Button */}
             <button
               onClick={() => setFilterValue("")}
-              className="bg-red-500 text-white p-2 rounded-lg shadow-md hover:bg-red-600 transition"
+              className="w-full lg:w-auto bg-red-500 text-white p-2 rounded-lg shadow-md hover:bg-red-600 transition"
             >
               Clear Filter
             </button>
@@ -189,6 +193,7 @@ const Admin = () => {
           ))}
         </div>
       </div>
+
       <Footer />
     </>
   );
