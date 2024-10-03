@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { FaFacebookF, FaTwitter, FaInstagram } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const [userId, setUserId] = useState("");
@@ -21,6 +23,8 @@ const Login = () => {
       userId === credentials[selectedRole].userId &&
       password === credentials[selectedRole].password
     ) {
+      toast.success(`Successfully logged in as ${selectedRole}!`);
+
       switch (selectedRole) {
         case "Admin":
           navigate("/admin", { state: { role: selectedRole } });
@@ -35,7 +39,7 @@ const Login = () => {
           break;
       }
     } else {
-      alert("Invalid User ID or Password!");
+      toast.error("Invalid User ID or Password!");
     }
   };
 
@@ -44,6 +48,7 @@ const Login = () => {
       className="flex h-screen bg-cover bg-center overflow"
       style={{ backgroundImage: 'url("")' }}
     >
+      <ToastContainer /> {/* Add ToastContainer */}
       <div className="flex-1 flex flex-col justify-center p-10 text-gray-900">
         <h1 className="text-5xl font-bold mb-5">Welcome To Hi-Tech</h1>
         <p className="text-lg mb-10">

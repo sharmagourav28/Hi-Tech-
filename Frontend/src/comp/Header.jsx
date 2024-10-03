@@ -7,7 +7,14 @@ const Header = () => {
   const { role } = location.state || { role: "Guest" };
 
   const handleLogoutClick = () => {
-    navigate("/"); // Navigate to the login page
+    // Clear localStorage/sessionStorage if you are using them to store user data
+    localStorage.removeItem("userRole"); // Example for clearing stored role
+    localStorage.removeItem("userId"); // Example for clearing user ID
+    // You can clear other items as per your app logic, or you can clear all:
+    // localStorage.clear();
+
+    // Navigate to the login page
+    navigate("/", { replace: true }); // Replace history so that user can't go back after logout
   };
 
   return (
