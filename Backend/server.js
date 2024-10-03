@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const connectDB = require("./config/db");
 const hydroRoutes = require("./routes/hydroroutes");
 const authRoutes = require("./routes/authRoutes");
+const userRoutes = require("./routes/userRoutes");
 
 dotenv.config();
 const app = express();
@@ -17,6 +18,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // Routes
+app.use("/api", userRoutes);
 app.use("/api/hydro", hydroRoutes);
 app.use("/api/auth", authRoutes); // Authentication routes
 

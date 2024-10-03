@@ -10,6 +10,7 @@ import Contact from "./comp/Contact.jsx";
 import About from "./comp/About.jsx";
 import Login from "./comp/Login.jsx";
 import Admin from "./comp/admin.jsx";
+import Setting from "./comp/Setting.jsx";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -23,7 +24,7 @@ function App() {
         <Route path="/pdi" element={<Pdi />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
-
+        <Route path="/setting" element={<Setting />} />
         <Route path="/admin" element={<Admin />} />
       </Routes>
       {/* <Footer /> */}

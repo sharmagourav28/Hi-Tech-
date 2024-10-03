@@ -1,62 +1,58 @@
 import React from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Header = () => {
-  const location = useLocation();
   const navigate = useNavigate();
-  const { role } = location.state || { role: "Guest" };
 
   const handleLogoutClick = () => {
     // Clear localStorage/sessionStorage if you are using them to store user data
-    localStorage.removeItem("userRole"); // Example for clearing stored role
-    localStorage.removeItem("userId"); // Example for clearing user ID
-    // You can clear other items as per your app logic, or you can clear all:
-    // localStorage.clear();
-
-    // Navigate to the login page
-    navigate("/", { replace: true }); // Replace history so that user can't go back after logout
+    localStorage.removeItem("userRole");
+    localStorage.removeItem("userId");
+    navigate("/", { replace: true }); // Redirect to login
   };
 
   return (
     <header className="border-b py-4 bg-white tracking-wide fixed top-0 left-0 w-full z-50">
       <div className="max-w-7xl w-full mx-auto flex flex-wrap items-center gap-4 px-4 sm:px-10">
         <a href="javascript:void(0)">
-          <h3 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500 py-4">
+          <h3 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500 py-4">
             HiTech System
           </h3>
         </a>
         <div id="collapseMenu" className="max-lg:hidden lg:!block">
           <ul className="lg:flex lg:ml-12 lg:gap-x-6">
-            {role === "Admin" && (
-              <li>
-                <Link
-                  to="/admin"
-                  className="hover:text-blue-600 block font-bold transition-all"
-                >
-                  ADMIN
-                </Link>
-              </li>
-            )}
-            {role === "PDI Tester" && (
-              <li>
-                <Link
-                  to="/pdi"
-                  className="hover:text-blue-600 block font-bold transition-all"
-                >
-                  PDI
-                </Link>
-              </li>
-            )}
-            {role === "Hydro Tester" && (
-              <li>
-                <Link
-                  to="/hydro"
-                  className="hover:text-blue-600 block font-bold transition-all"
-                >
-                  HYDRO
-                </Link>
-              </li>
-            )}
+            <li>
+              <Link
+                to="/admin"
+                className="hover:text-blue-600 block font-bold transition-all"
+              >
+                ADMIN
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/setting"
+                className="hover:text-blue-600 block font-bold transition-all"
+              >
+                SETTINGS
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/pdi"
+                className="hover:text-blue-600 block font-bold transition-all"
+              >
+                PDI
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/hydro"
+                className="hover:text-blue-600 block font-bold transition-all"
+              >
+                HYDRO
+              </Link>
+            </li>
           </ul>
         </div>
         <div className="flex ml-auto">

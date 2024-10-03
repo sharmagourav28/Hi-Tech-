@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState } from "react";
 import {
   FaFacebookF,
@@ -23,31 +24,55 @@ const Login = () => {
     "Hydro Tester": { userId: "hydroUser", password: "hydroPass" },
   };
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
-    if (
-      userId === credentials[selectedRole].userId &&
-      password === credentials[selectedRole].password
-    ) {
-      toast.success(`Successfully logged in as ${selectedRole}!`);
+    try {
+      const res = await axios.post("http://localhost:5000/api/login", {
+        userId,
+        password,
+      });
+      console.log(res);
+      if (res.data.message === "Login successful" && res.status === 200) {
+        const roleRoutes = {
+          hydro: "/hydro",
+          admin: "/admin",
+          pdi: "/pdi",
+        };
 
-      switch (selectedRole) {
-        case "Admin":
-          navigate("/admin", { state: { role: selectedRole } });
-          break;
-        case "Hydro Tester":
-          navigate("/hydro", { state: { role: selectedRole } });
-          break;
-        case "PDI Tester":
-          navigate("/pdi", { state: { role: selectedRole } });
-          break;
-        default:
-          break;
+        const role = res.data.user.role;
+        if (roleRoutes[role] && selectedRole === role) {
+          navigate(roleRoutes[role]);
+        } else {
+          console.error("Unknown role:", role);
+        }
       }
-    } else {
-      toast.error("Invalid User ID or Password!");
+    } catch (error) {
+      console.log(error);
     }
+
+    //   if (
+    //     userId === credentials[selectedRole].userId &&
+    //     password === credentials[selectedRole].password
+    //   ) {
+    //     toast.success(`Successfully logged in as ${selectedRole}!`);
+
+    //     switch (selectedRole) {
+    //       case "Admin":
+    //         navigate("/admin", { state: { role: selectedRole } });
+    //         break;
+    //       case "Hydro Tester":
+    //         navigate("/hydro", { state: { role: selectedRole } });
+    //         break;
+    //       case "PDI Tester":
+    //         navigate("/pdi", { state: { role: selectedRole } });
+    //         break;
+    //       default:
+    //         break;
+    //     }
+    //   } else {
+    //     toast.error("Invalid User ID or Password!");
+    //   }
   };
 
   return (
@@ -99,9 +124,9 @@ const Login = () => {
               value={selectedRole}
               onChange={(e) => setSelectedRole(e.target.value)}
             >
-              <option value="Admin">Admin</option>
-              <option value="PDI Tester">PDI Tester</option>
-              <option value="Hydro Tester">Hydro Tester</option>
+              <option value="admin">Admin</option>
+              <option value="pdi">PDI Tester</option>
+              <option value="hydro">Hydro Tester</option>
             </select>
             <input
               type="text"
