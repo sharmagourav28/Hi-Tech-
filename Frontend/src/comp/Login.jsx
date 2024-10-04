@@ -78,7 +78,7 @@ const Login = () => {
 	return (
 		<>
 			<div
-				className='sm:flex  h-screen  '
+				className='sm:flex h-screen'
 				style={{
 					backgroundImage: "url('assets/bg.jpg')",
 					backgroundSize: 'cover',
