@@ -2,6 +2,15 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 
 const UserSchema = new mongoose.Schema({
+  fullName: {
+    type: String,
+    required: true, // Make fullName required
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true, // Ensure email is unique
+  },
   username: {
     type: String,
     required: true,
@@ -13,7 +22,7 @@ const UserSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ["admin", "pdi", "hydro"], // Added "admin" to the allowed roles
+    enum: ["admin", "pdi", "hydro"], // Allowed roles
     required: true,
   },
 });

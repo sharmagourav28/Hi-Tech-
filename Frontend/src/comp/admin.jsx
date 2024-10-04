@@ -3,11 +3,10 @@ import Header from "./Header";
 import Footer from "./Footer";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import * as XLSX from "xlsx"; // Import the XLSX library for Excel export
 
 const Admin = () => {
   const [hydroTests, setHydroTests] = useState([]);
-  const [sortField, setSortField] = useState("testDate");
-  const [sortOrder, setSortOrder] = useState("asc");
   const [filterField, setFilterField] = useState("");
   const [filterValue, setFilterValue] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -17,8 +16,6 @@ const Admin = () => {
     const fetchHydroTests = async () => {
       try {
         const query = new URLSearchParams({
-          sortField,
-          sortOrder,
           filterField,
           filterValue,
         }).toString();
@@ -34,7 +31,7 @@ const Admin = () => {
     };
 
     fetchHydroTests();
-  }, [sortField, sortOrder, filterField, filterValue]);
+  }, [filterField, filterValue]);
 
   // Calculate the records to display based on the current page
   const indexOfLastRecord = currentPage * recordsPerPage;
@@ -52,81 +49,62 @@ const Admin = () => {
     setCurrentPage(pageNumber);
   };
 
+  // Function to handle exporting hydro tests to Excel
+  const handleExportToExcel = () => {
+    const ws = XLSX.utils.json_to_sheet(hydroTests);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Hydro Tests");
+    XLSX.writeFile(wb, "Hydro_Tests.xlsx");
+    toast.success("Data exported to Excel successfully!");
+  };
+
   return (
     <>
       <Header />
       <div className="p-6 pt-10 bg-gradient-to-r from-blue-50 to-indigo-50 min-h-screen w-full mt-20">
-        {" "}
-        {/* Add margin-top here */}
         <h2 className="text-4xl font-extrabold mb-8 text-center text-indigo-600">
           Hydro Test Records
         </h2>
-        {/* Filter and Sort Controls */}
+
+        {/* Filter Controls */}
         <div className="mb-8 flex flex-wrap justify-center items-center bg-white p-6 rounded-lg shadow-lg transition-all duration-300 ease-in-out hover:shadow-xl">
-          <div className="flex flex-col lg:flex-row lg:space-x-8 space-y-4 lg:space-y-0 items-center">
-            {/* Sort By */}
-            <div className="flex items-center">
-              <label className="mr-2 font-semibold text-gray-700">
-                Sort By:
-              </label>
-              <select
-                onChange={(e) => setSortField(e.target.value)}
-                value={sortField}
-                className="w-full lg:w-auto p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 transition duration-200 ease-in-out"
-              >
-                <option value="testDate">Test Date</option>
-                <option value="htmfPartNumber">HTMF Part Number</option>
-                <option value="customerPartNumber">Customer Part Number</option>
-                <option value="serialNumber">Serial Number</option>
-              </select>
-            </div>
-
-            {/* Order */}
-            <div className="flex items-center">
-              <label className="mr-2 font-semibold text-gray-700">Order:</label>
-              <select
-                onChange={(e) => setSortOrder(e.target.value)}
-                value={sortOrder}
-                className="w-full lg:w-auto p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 transition duration-200 ease-in-out"
-              >
-                <option value="asc">Ascending</option>
-                <option value="desc">Descending</option>
-              </select>
-            </div>
-
-            {/* Filter By */}
-            <div className="flex items-center">
-              <label className="mr-2 font-semibold text-gray-700">
-                Filter By:
-              </label>
-              <select
-                onChange={(e) => setFilterField(e.target.value)}
-                value={filterField}
-                className="w-full lg:w-auto p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 transition duration-200 ease-in-out"
-              >
-                <option value="">None</option>
-                <option value="htmfPartNumber">HTMF Part Number</option>
-                <option value="customerPartNumber">Customer Part Number</option>
-                <option value="serialNumber">Serial Number</option>
-              </select>
-              <input
-                type="text"
-                placeholder="Filter value"
-                value={filterValue}
-                onChange={(e) => setFilterValue(e.target.value)}
-                className="ml-2 w-full lg:w-auto p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 transition duration-200 ease-in-out"
-              />
-            </div>
-
-            {/* Clear Filter Button */}
+          <div className="flex items-center">
+            <label className="mr-2 font-semibold text-gray-700">
+              Filter By:
+            </label>
+            <select
+              onChange={(e) => setFilterField(e.target.value)}
+              value={filterField}
+              className="w-full lg:w-auto p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 transition duration-200 ease-in-out"
+            >
+              <option value="">None</option>
+              <option value="htmfPartNumber">HTMF Part Number</option>
+              <option value="customerPartNumber">Customer Part Number</option>
+              <option value="serialNumber">Serial Number</option>
+            </select>
+            <input
+              type="text"
+              placeholder="Filter value"
+              value={filterValue}
+              onChange={(e) => setFilterValue(e.target.value)}
+              className="ml-2 w-full lg:w-auto p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-indigo-500 transition duration-200 ease-in-out"
+            />
             <button
               onClick={() => setFilterValue("")}
-              className="w-full lg:w-auto bg-red-600 text-white p-2 rounded-lg shadow-md hover:bg-red-700 transition duration-200 ease-in-out"
+              className="ml-2 w-full lg:w-auto bg-red-600 text-white p-2 rounded-lg shadow-md hover:bg-red-700 transition duration-200 ease-in-out"
             >
               Clear Filter
             </button>
+            {/* Download Data Button */}
+            <button
+              onClick={handleExportToExcel}
+              className="ml-2 w-full lg:w-auto bg-green-600 text-white p-2 rounded-lg shadow-md hover:bg-green-700 transition duration-200 ease-in-out"
+            >
+              Download Data
+            </button>
           </div>
         </div>
+
         {/* Table Display */}
         <div className="overflow-x-auto w-full">
           <table className="min-w-full bg-white border rounded-lg shadow-lg">
@@ -187,6 +165,7 @@ const Admin = () => {
             </tbody>
           </table>
         </div>
+
         {/* Pagination Controls */}
         <div className="flex justify-center mt-8">
           {Array.from({ length: totalPages }, (_, index) => (
@@ -204,8 +183,8 @@ const Admin = () => {
           ))}
         </div>
       </div>
-
       <Footer />
+      <ToastContainer /> {/* This renders the toast messages */}
     </>
   );
 };

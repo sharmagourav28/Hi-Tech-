@@ -21,6 +21,7 @@ app.use(bodyParser.json());
 app.use("/api", userRoutes);
 app.use("/api/hydro", hydroRoutes);
 app.use("/api/auth", authRoutes); // Authentication routes
+app.use("/api/users", userRoutes); // This will route to userRoutes.js
 
 // Start the server
 const PORT = process.env.PORT || 5000;
