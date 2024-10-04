@@ -1,6 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
+const Hydro = require("../models/Hydro");
 const router = express.Router();
 
 // Route to create a user
@@ -83,11 +84,11 @@ router.delete("/:id", async (req, res) => {
 
 router.get("/total-stats", async (req, res) => {
   try {
-    const hydroUsers = await User.countDocuments({ role: "HYDRO" }); // Assuming 'role' field is available
-    const pdiUsers = await User.countDocuments({ role: "PDI" });
-    const admins = await User.countDocuments({ role: "Admin" });
+    const hydroUsers = await User.countDocuments({ role: "hydro" }); // Assuming 'role' field is available
+    const pdiUsers = await User.countDocuments({ role: "pdi" });
+    const admins = await User.countDocuments({ role: "admin" });
     const hydroTestsDone = await Hydro.countDocuments(); // Assuming a Hydro model for the tests
-
+    console.log(hydroUsers);
     res.json({
       hydroUsers,
       pdiUsers,
