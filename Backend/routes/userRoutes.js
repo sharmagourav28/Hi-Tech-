@@ -81,4 +81,21 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+router.get("/total-stats", async (req, res) => {
+  try {
+    const hydroUsers = await User.countDocuments({ role: "HYDRO" }); // Assuming 'role' field is available
+    const pdiUsers = await User.countDocuments({ role: "PDI" });
+    const admins = await User.countDocuments({ role: "Admin" });
+    const hydroTestsDone = await Hydro.countDocuments(); // Assuming a Hydro model for the tests
+
+    res.json({
+      hydroUsers,
+      pdiUsers,
+      admins,
+      hydroTestsDone,
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 module.exports = router;

@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Dashboard from "./Dashboard";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -51,6 +52,14 @@ const Header = () => {
                 className="hover:text-blue-600 block font-bold transition-all"
               >
                 HYDRO
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/dashboard"
+                className="hover:text-blue-600 block font-bold transition-all"
+              >
+                Dashboard
               </Link>
             </li>
           </ul>
