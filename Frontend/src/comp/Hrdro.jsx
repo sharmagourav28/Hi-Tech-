@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import jsPDF from "jspdf";
 import Header from "./Header";
 import Footer from "./Footer";
-
 import "jspdf-autotable";
+
 const Hydro = () => {
   const [testDate, setTestDate] = useState(() => {
     const today = new Date().toISOString().split("T")[0];
@@ -11,6 +11,8 @@ const Hydro = () => {
   });
   const [htmfPartNumber, setHtmfPartNumber] = useState("");
   const [customerPartNumber, setCustomerPartNumber] = useState("");
+  const [type, setType] = useState("");
+  const [capacityVolume, setCapacityVolume] = useState("");
   const [serialNumber, setSerialNumber] = useState(() => {
     const today = new Date().toISOString().split("T")[0].replace(/-/g, "");
     return `SN${today}${Math.floor(1000 + Math.random() * 9000)}`;
@@ -24,6 +26,10 @@ const Hydro = () => {
   const [operator, setOperator] = useState("");
   const [witnessBay, setWitnessBay] = useState("");
   const [passFail, setPassFail] = useState("");
+  const [shellThickness, setShellThickness] = useState("");
+  const [capThickness, setCapThickness] = useState("");
+  const [flangeThickness, setFlangeThickness] = useState("");
+  const [materialGrade, setMaterialGrade] = useState("");
 
   const handlePassFailChange = (e) => {
     setPassFail(e.target.value);
@@ -31,73 +37,71 @@ const Hydro = () => {
 
   const generatePDF = () => {
     const doc = new jsPDF({
-      orientation: "landscape", // Keep landscape for wider pages
+      orientation: "landscape",
       unit: "mm",
-      format: "a3", // Change to A3 format
+      format: "a3",
     });
 
-    // Custom styling: Borders, color, and font sizes
     doc.setDrawColor(0, 0, 0);
     doc.setLineWidth(1);
-    doc.rect(10, 10, 400, 277, "S"); // Adjust dimensions to fit A3 size
+    doc.rect(10, 10, 400, 277, "S");
 
-    // Adding a background color (optional)
-    doc.setFillColor(240, 240, 240); // Light gray
-    doc.rect(10, 10, 400, 277, "F"); // Adjust dimensions for background
+    doc.setFillColor(240, 240, 240);
+    doc.rect(10, 10, 400, 277, "F");
 
-    // Title of Certificate
-    doc.setFontSize(26); // Increase font size for A3
+    doc.setFontSize(26);
     doc.setFont("helvetica", "bold");
-    doc.text("HYDROSTATIC TEST CERTIFICATE", 210, 40, null, null, "center"); // Adjust Y-position
+    doc.text("HYDROSTATIC TEST CERTIFICATE", 210, 40, null, null, "center");
 
-    // Logo (if you have an image URL or base64 encoded image)
     const logoImg = "data:image/jpeg;base64,..."; // Replace with actual image URL/base64
-    doc.addImage(logoImg, "JPEG", 30, 20, 70, 40); // Adjust logo position and size for A3
+    doc.addImage(logoImg, "JPEG", 30, 20, 70, 40);
 
-    // Add form data content in a table format
-    doc.setFontSize(16); // Increase font size slightly for larger paper
+    doc.setFontSize(16);
     doc.setTextColor(50, 50, 50);
 
     const formData = [
       { label: "Test Date", value: testDate },
       { label: "HTMF Part Number", value: htmfPartNumber },
       { label: "Customer Part Number", value: customerPartNumber },
+      { label: "Type", value: type },
+      { label: "Capacity/Volume", value: capacityVolume },
       { label: "Serial Number", value: serialNumber },
       { label: "Hydro Pressure (Bar)", value: hydroPressure },
       { label: "Test Start Time", value: `${startTime} ${startAmPm}` },
       { label: "Test End Time", value: `${endTime} ${endAmPm}` },
       { label: "Welder Code", value: welderCode },
-      { label: "Operator", value: operator },
-      { label: "Witness Bay", value: witnessBay },
+      { label: "Operator Code", value: operator },
+      { label: "Witness Code", value: witnessBay },
       { label: "Result", value: passFail },
+      { label: "Shell Thickness", value: shellThickness },
+      { label: "Cap Thickness", value: capThickness },
+      { label: "Flange Thickness", value: flangeThickness },
+      { label: "Material Grade", value: materialGrade },
     ];
 
-    // Set up table structure
     const tableData = formData.map(({ label, value }) => [label, value]);
 
     doc.autoTable({
-      startY: 70, // Adjust starting Y-position for A3
+      startY: 70,
       head: [["Field", "Details"]],
       body: tableData,
       theme: "grid",
       styles: {
-        fontSize: 14, // Adjust font size for readability on A3
+        fontSize: 14,
         cellPadding: 4,
       },
       headStyles: {
-        fillColor: [0, 102, 204], // Blue header color
+        fillColor: [0, 102, 204],
         textColor: 255,
       },
       bodyStyles: {
-        fillColor: [245, 245, 245], // Light gray for data rows
+        fillColor: [245, 245, 245],
       },
       margin: { top: 10 },
     });
 
-    // Add a footer with signature lines
-    // After rendering the table
-    const finalY = doc.autoTable.previous.finalY || 0; // Get the position where the table ends
-    const signatureYPosition = finalY + 20; // Add some space below the table
+    const finalY = doc.autoTable.previous.finalY || 0;
+    const signatureYPosition = finalY + 20;
 
     doc.setFontSize(14);
     doc.text(
@@ -111,7 +115,6 @@ const Hydro = () => {
       signatureYPosition
     );
 
-    // Save the PDF
     doc.save(`Hydrostatic_Test_Certificate_${serialNumber}.pdf`);
   };
 
@@ -122,6 +125,8 @@ const Hydro = () => {
       testDate,
       htmfPartNumber,
       customerPartNumber,
+      type,
+      capacityVolume,
       serialNumber,
       hydroPressure,
       startTime: `${startTime} ${startAmPm}`,
@@ -130,6 +135,10 @@ const Hydro = () => {
       operator,
       witnessBay,
       passFail,
+      shellThickness,
+      capThickness,
+      flangeThickness,
+      materialGrade,
     };
 
     try {
@@ -149,6 +158,8 @@ const Hydro = () => {
         setTestDate(new Date().toISOString().split("T")[0]);
         setHtmfPartNumber("");
         setCustomerPartNumber("");
+        setType("");
+        setCapacityVolume("");
         setSerialNumber(
           `SN${new Date()
             .toISOString()
@@ -164,6 +175,10 @@ const Hydro = () => {
         setOperator("");
         setWitnessBay("");
         setPassFail("");
+        setShellThickness("");
+        setCapThickness("");
+        setFlangeThickness("");
+        setMaterialGrade("");
       } else {
         alert("Failed to submit the form");
       }
@@ -227,16 +242,42 @@ const Hydro = () => {
                 />
               </div>
 
+              {/* Type */}
+              <div className="w-full">
+                <label className="block text-sm font-medium text-gray-700">
+                  Type
+                </label>
+                <input
+                  type="text"
+                  value={type}
+                  onChange={(e) => setType(e.target.value)}
+                  className="w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+              </div>
+
+              {/* Capacity Volume */}
+              <div className="w-full">
+                <label className="block text-sm font-medium text-gray-700">
+                  Capacity/Volume
+                </label>
+                <input
+                  type="text"
+                  value={capacityVolume}
+                  onChange={(e) => setCapacityVolume(e.target.value)}
+                  className="w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+              </div>
+
               {/* Serial Number */}
               <div className="w-full">
                 <label className="block text-sm font-medium text-gray-700">
-                  Serial Number (Auto Generated)
+                  Serial Number
                 </label>
                 <input
                   type="text"
                   value={serialNumber}
                   readOnly
-                  className="w-full mt-1 p-3 border border-gray-300 bg-gray-100 rounded-md focus:outline-none"
+                  className="w-full mt-1 p-3 border border-gray-300 rounded-md bg-gray-200 cursor-not-allowed"
                 />
               </div>
 
@@ -246,62 +287,52 @@ const Hydro = () => {
                   Hydro Pressure (Bar)
                 </label>
                 <input
-                  type="number"
+                  type="text"
                   value={hydroPressure}
                   onChange={(e) => setHydroPressure(e.target.value)}
                   className="w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
 
-              {/* Start and End Time */}
-              <div className="grid grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Start Time
-                  </label>
+              {/* Start Time */}
+              <div className="w-full">
+                <label className="block text-sm font-medium text-gray-700">
+                  Start Time
+                </label>
+                <div className="flex space-x-4">
                   <input
                     type="time"
                     value={startTime}
                     onChange={(e) => setStartTime(e.target.value)}
-                    className="w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="flex-1 mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    End Time
-                  </label>
-                  <input
-                    type="time"
-                    value={endTime}
-                    onChange={(e) => setEndTime(e.target.value)}
-                    className="w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  />
-                </div>
-              </div>
-
-              {/* Dropdown for AM/PM */}
-              <div className="grid grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Start AM/PM
-                  </label>
                   <select
                     value={startAmPm}
                     onChange={(e) => setStartAmPm(e.target.value)}
-                    className="w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   >
                     <option value="AM">AM</option>
                     <option value="PM">PM</option>
                   </select>
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    End AM/PM
-                  </label>
+              </div>
+
+              {/* End Time */}
+              <div className="w-full">
+                <label className="block text-sm font-medium text-gray-700">
+                  End Time
+                </label>
+                <div className="flex space-x-4">
+                  <input
+                    type="time"
+                    value={endTime}
+                    onChange={(e) => setEndTime(e.target.value)}
+                    className="flex-1 mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  />
                   <select
                     value={endAmPm}
                     onChange={(e) => setEndAmPm(e.target.value)}
-                    className="w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   >
                     <option value="AM">AM</option>
                     <option value="PM">PM</option>
@@ -314,22 +345,18 @@ const Hydro = () => {
                 <label className="block text-sm font-medium text-gray-700">
                   Welder Code
                 </label>
-                <select
+                <input
+                  type="text"
                   value={welderCode}
                   onChange={(e) => setWelderCode(e.target.value)}
                   className="w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                >
-                  <option value="">Select Welder Code</option>
-                  <option value="W001">W001</option>
-                  <option value="W002">W002</option>
-                  <option value="W003">W003</option>
-                </select>
+                />
               </div>
 
-              {/* Operator */}
+              {/* Operator Code */}
               <div className="w-full">
                 <label className="block text-sm font-medium text-gray-700">
-                  Operator
+                  Operator Code
                 </label>
                 <input
                   type="text"
@@ -352,10 +379,10 @@ const Hydro = () => {
                 />
               </div>
 
-              {/* Pass or Fail */}
+              {/* Pass/Fail */}
               <div className="w-full">
                 <label className="block text-sm font-medium text-gray-700">
-                  Result (Pass or Fail)
+                  Result (Pass/Fail)
                 </label>
                 <select
                   value={passFail}
@@ -368,20 +395,62 @@ const Hydro = () => {
                 </select>
               </div>
 
-              {/* Button */}
-              <div className="text-center">
-                <button
-                  type="submit"
-                  disabled={!passFail} // Button is disabled until Pass or Fail is selected
-                  className={`w-full py-3 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 ${
-                    passFail === "Fail"
-                      ? "bg-red-600 hover:bg-red-700 focus:ring-red-500"
-                      : "bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500"
-                  } text-white`}
-                >
-                  {passFail === "Fail" ? "Review Test" : "Generate Certificate"}
-                </button>
+              {/* Thickness Fields */}
+              <div className="flex space-x-4">
+                <div className="flex-1">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Shell Thickness
+                  </label>
+                  <input
+                    type="text"
+                    value={shellThickness}
+                    onChange={(e) => setShellThickness(e.target.value)}
+                    className="w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  />
+                </div>
+                <div className="flex-1">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Cap Thickness
+                  </label>
+                  <input
+                    type="text"
+                    value={capThickness}
+                    onChange={(e) => setCapThickness(e.target.value)}
+                    className="w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  />
+                </div>
+                <div className="flex-1">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Flange Thickness
+                  </label>
+                  <input
+                    type="text"
+                    value={flangeThickness}
+                    onChange={(e) => setFlangeThickness(e.target.value)}
+                    className="w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  />
+                </div>
               </div>
+
+              {/* Material Grade */}
+              <div className="w-full">
+                <label className="block text-sm font-medium text-gray-700">
+                  Material Grade
+                </label>
+                <input
+                  type="text"
+                  value={materialGrade}
+                  onChange={(e) => setMaterialGrade(e.target.value)}
+                  className="w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="w-full mt-4 p-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                Generate Certificate
+              </button>
             </form>
           </div>
         </div>
