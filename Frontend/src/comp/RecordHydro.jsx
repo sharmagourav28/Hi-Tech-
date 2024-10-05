@@ -11,13 +11,17 @@ const RecordHydro = () => {
     type: "",
     capacityVolume: "",
     pressureBar: "",
-    shellThickness: "", // New field
-    capThickness: "", // New field
-    flangeThickness: "", // New field
-    materialGrade: "", // New field
+    shellThickness: "",
+    capThickness: "",
+    flangeThickness: "",
+    materialGrade: "",
   });
 
   const [hydroTests, setHydroTests] = useState([]);
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [recordsPerPage] = useState(15); // Display 15 records per page
 
   // Fetch hydro test records from the server
   const fetchHydroTests = async () => {
@@ -39,11 +43,8 @@ const RecordHydro = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submitting:", formData); // Debugging line
     try {
       await axios.post("http://localhost:5000/api/hydro/tests", formData);
-
-      // Show success notification
       toast.success("Hydro Test record saved successfully!");
 
       // Clear the form
@@ -53,14 +54,13 @@ const RecordHydro = () => {
         type: "",
         capacityVolume: "",
         pressureBar: "",
-        shellThickness: "", // Clear new fields
-        capThickness: "", // Clear new fields
-        flangeThickness: "", // Clear new fields
-        materialGrade: "", // Clear new fields
+        shellThickness: "",
+        capThickness: "",
+        flangeThickness: "",
+        materialGrade: "",
       });
 
-      // Fetch updated hydro test records
-      fetchHydroTests();
+      fetchHydroTests(); // Refresh the list
     } catch (error) {
       console.error("Error saving hydro test record:", error);
       if (error.response) {
@@ -74,7 +74,6 @@ const RecordHydro = () => {
   };
 
   const handleDelete = async (id) => {
-    console.log(id);
     try {
       await axios.delete(`http://localhost:5000/api/hydro/tests/${id}`);
       toast.success("Hydro Test record deleted successfully!");
@@ -84,6 +83,17 @@ const RecordHydro = () => {
       toast.error("Error deleting the record");
     }
   };
+
+  // Pagination logic
+  const indexOfLastRecord = currentPage * recordsPerPage;
+  const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
+  const currentRecords = hydroTests.slice(
+    indexOfFirstRecord,
+    indexOfLastRecord
+  );
+  const totalPages = Math.ceil(hydroTests.length / recordsPerPage);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <div className="flex p-6 bg-gray-100 min-h-screen">
@@ -107,9 +117,11 @@ const RecordHydro = () => {
               </tr>
             </thead>
             <tbody>
-              {hydroTests.map((test, index) => (
+              {currentRecords.map((test, index) => (
                 <tr key={test._id}>
-                  <td className="py-2 px-2 border-b">{index + 1}</td>
+                  <td className="py-2 px-2 border-b">
+                    {indexOfFirstRecord + index + 1}
+                  </td>
                   <td className="py-2 px-2 border-b">{test.htmfNo}</td>
                   <td className="py-2 px-2 border-b">{test.customerPartNo}</td>
                   <td className="py-2 px-2 border-b">{test.type}</td>
@@ -131,8 +143,42 @@ const RecordHydro = () => {
               ))}
             </tbody>
           </table>
+
+          {/* Pagination Controls */}
+          <div className="flex justify-between items-center mt-4">
+            <button
+              onClick={() => paginate(currentPage - 1)}
+              disabled={currentPage === 1}
+              className={`px-4 py-2 text-white rounded-md transition duration-300 
+      ${
+        currentPage === 1
+          ? "bg-gray-400 cursor-not-allowed"
+          : "bg-blue-500 hover:bg-blue-600"
+      }`}
+            >
+              Previous
+            </button>
+
+            <p>
+              Page {currentPage} of {totalPages}
+            </p>
+
+            <button
+              onClick={() => paginate(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className={`px-4 py-2 text-white rounded-md transition duration-300 
+      ${
+        currentPage === totalPages
+          ? "bg-gray-400 cursor-not-allowed"
+          : "bg-blue-500 hover:bg-blue-600"
+      }`}
+            >
+              Next
+            </button>
+          </div>
         </div>
       </div>
+
       <div className="w-1/3 pl-4">
         <h2 className="text-xl font-bold mb-4">Record Hydro Test</h2>
         <form

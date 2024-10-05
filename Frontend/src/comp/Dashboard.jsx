@@ -13,6 +13,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import Admin from "./admin";
 import RecordHydro from "./RecordHydro";
+import WelderFormAndTable from "./Welder";
 
 const Dashboard = () => {
   const [stats, setStats] = useState({
@@ -314,7 +315,9 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      <WelderFormAndTable />
       <RecordHydro />
+
       <Admin />
 
       <ToastContainer />

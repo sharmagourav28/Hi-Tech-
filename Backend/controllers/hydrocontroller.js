@@ -2,6 +2,7 @@ const PDFDocument = require("pdfkit");
 const fs = require("fs");
 const Hydro = require("../models/Hydro");
 const RecordHydro = require("../models/RecordHydro");
+const Welder = require("../models/Welder"); // Import the Welder model
 
 // Save hydro test data
 exports.saveHydroData = async (req, res) => {
@@ -132,12 +133,10 @@ exports.createHydroTest = async (req, res) => {
     res.status(201).json({ message: "Hydro Test record created successfully" });
   } catch (error) {
     console.error("Error creating hydro test record:", error);
-    res
-      .status(500)
-      .json({
-        message: "Error creating hydro test record",
-        error: error.message,
-      });
+    res.status(500).json({
+      message: "Error creating hydro test record",
+      error: error.message,
+    });
   }
 };
 
@@ -153,5 +152,41 @@ exports.deleteHydroTest = async (req, res) => {
     res.status(200).json({ message: "Hydro test record deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: "Error deleting hydro test record" });
+  }
+};
+
+// Save welder data
+exports.saveWelderData = async (req, res) => {
+  try {
+    const welderData = new Welder(req.body);
+    await welderData.save();
+    res.status(201).json({ message: "Welder data saved successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error saving welder data", error });
+  }
+};
+
+// Fetch all welder data
+exports.getAllWelders = async (req, res) => {
+  try {
+    const welders = await Welder.find();
+    res.status(200).json(welders);
+  } catch (error) {
+    res.status(500).json({ message: "Error retrieving welders", error });
+  }
+};
+
+// Update welder data by ID
+exports.deleteWelderById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const welder = await Welder.findByIdAndDelete(id);
+    if (!welder) {
+      return res.status(404).json({ message: "Welder not found" });
+    }
+    res.status(200).json({ message: "Welder deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting welder", error });
   }
 };
