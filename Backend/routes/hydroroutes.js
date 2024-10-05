@@ -7,11 +7,6 @@ const {
   getHydroTests,
   deleteHydroTest,
 } = require("../controllers/hydroController");
-const {
-  saveWelderData,
-  getAllWelders,
-  deleteWelderById,
-} = require("../controllers/hydroController");
 
 const Hydro = require("../models/Hydro");
 const HydroTest = require("../models/RecordHydro");
@@ -81,10 +76,4 @@ router.get("/ht/:id", async (req, res) => {
   }
 });
 
-// Route to save welder data
-router.post("/welders", saveWelderData); // POST route to save new welder data
-
-// Route to fetch all welder data
-router.get("/welders", getAllWelders); // GET route to fetch all welders
-router.delete("/welders/:id", deleteWelderById);
 module.exports = router;
