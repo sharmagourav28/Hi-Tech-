@@ -1,463 +1,529 @@
-import React, { useState } from "react";
-import jsPDF from "jspdf";
-import Header from "./Header";
-import Footer from "./Footer";
-import "jspdf-autotable";
+import React, { useEffect, useState } from 'react';
+import jsPDF from 'jspdf';
+import Header from './Header';
+import Footer from './Footer';
+import 'jspdf-autotable';
+import axios from 'axios';
 
 const Hydro = () => {
-  const [testDate, setTestDate] = useState(() => {
-    const today = new Date().toISOString().split("T")[0];
-    return today;
-  });
-  const [htmfPartNumber, setHtmfPartNumber] = useState("");
-  const [customerPartNumber, setCustomerPartNumber] = useState("");
-  const [type, setType] = useState("");
-  const [capacityVolume, setCapacityVolume] = useState("");
-  const [serialNumber, setSerialNumber] = useState(() => {
-    const today = new Date().toISOString().split("T")[0].replace(/-/g, "");
-    return `SN${today}${Math.floor(1000 + Math.random() * 9000)}`;
-  });
-  const [hydroPressure, setHydroPressure] = useState("");
-  const [startTime, setStartTime] = useState("");
-  const [endTime, setEndTime] = useState("");
-  const [startAmPm, setStartAmPm] = useState("AM");
-  const [endAmPm, setEndAmPm] = useState("AM");
-  const [welderCode, setWelderCode] = useState("");
-  const [operator, setOperator] = useState("");
-  const [witnessBay, setWitnessBay] = useState("");
-  const [passFail, setPassFail] = useState("");
-  const [shellThickness, setShellThickness] = useState("");
-  const [capThickness, setCapThickness] = useState("");
-  const [flangeThickness, setFlangeThickness] = useState("");
-  const [materialGrade, setMaterialGrade] = useState("");
+	const [testDate, setTestDate] = useState(() => {
+		const today = new Date().toISOString().split('T')[0];
+		return today;
+	});
+	const [htmfPartNumber, setHtmfPartNumber] = useState('');
+	const [customerPartNumber, setCustomerPartNumber] = useState('');
+	const [type, setType] = useState('');
+	const [capacityVolume, setCapacityVolume] = useState('');
+	const [serialNumber, setSerialNumber] = useState(() => {
+		const today = new Date().toISOString().split('T')[0].replace(/-/g, '');
+		return `SN${today}${Math.floor(1000 + Math.random() * 9000)}`;
+	});
+	const [hydroPressure, setHydroPressure] = useState('');
+	const [startTime, setStartTime] = useState('');
+	const [endTime, setEndTime] = useState('');
+	const [startAmPm, setStartAmPm] = useState('AM');
+	const [endAmPm, setEndAmPm] = useState('AM');
+	const [welderCode, setWelderCode] = useState('');
+	const [operator, setOperator] = useState('');
+	const [witnessBay, setWitnessBay] = useState('');
+	const [passFail, setPassFail] = useState('');
+	const [shellThickness, setShellThickness] = useState('');
+	const [capThickness, setCapThickness] = useState('');
+	const [flangeThickness, setFlangeThickness] = useState('');
+	const [materialGrade, setMaterialGrade] = useState('');
+	const [savedhtmf, setsavedhtmf] = useState();
+	const [filteredHTMF, setFilteredHTMF] = useState([]); // State to hold filtered results
+	const [isSelected, setIsSelected] = useState(true);
 
-  const handlePassFailChange = (e) => {
-    setPassFail(e.target.value);
-  };
+	useEffect(() => {
+		const fetchCustomerPartNumbers = async () => {
+			try {
+				const r = await axios.get(
+					'http://localhost:5000/api/hydro/allCustomerPartNumber',
+				);
+				setsavedhtmf(r.data); // Set the customer part numbers in state
+			} catch (error) {
+				console.error('Error fetching customer part numbers:', error);
+			}
+		};
 
-  const generatePDF = () => {
-    const doc = new jsPDF({
-      orientation: "landscape",
-      unit: "mm",
-      format: "a3",
-    });
+		fetchCustomerPartNumbers();
+	}, []); // Empty dependency array ensures this effect runs only once
 
-    doc.setDrawColor(0, 0, 0);
-    doc.setLineWidth(1);
-    doc.rect(10, 10, 400, 277, "S");
+	const handlePassFailChange = (e) => {
+		setPassFail(e.target.value);
+	};
 
-    doc.setFillColor(240, 240, 240);
-    doc.rect(10, 10, 400, 277, "F");
+	const handleOptionClick = async (data) => {
+		setIsSelected(false);
+		console.log('Selected Data:', data); // Log the selected data (which includes the ID)
 
-    doc.setFontSize(26);
-    doc.setFont("helvetica", "bold");
-    doc.text("HYDROSTATIC TEST CERTIFICATE", 210, 40, null, null, "center");
+		try {
+			// Replace 'data._id' with the actual ID field you want to send (assuming '_id' is the field for the unique identifier)
+			const r = await axios.get(
+				`http://localhost:5000/api/hydro/ht/${data._id}`,
+			);
+			console.log(r.data.htmfNo);
+			setCapThickness(r.data.capThickness);
+			setCapacityVolume(r.data.capacityVolume);
+			setCustomerPartNumber(r.data.customerPartNo);
+			setEndAmPm(r.data.endAmPm);
+			setMaterialGrade(r.data.materialGrade);
+			setHydroPressure(r.data.pressureBar);
+			setFlangeThickness(r.data.flangeThickness);
+			setType(r.data.type);
+			setShellThickness(r.data.shellThickness);
+			setHtmfPartNumber(r.data.htmfNo);
+		} catch (error) {
+			console.error('Error fetching data for selected ID:', error);
+		}
+	};
 
-    const logoImg = "data:image/jpeg;base64,..."; // Replace with actual image URL/base64
-    doc.addImage(logoImg, "JPEG", 30, 20, 70, 40);
+	const generatePDF = () => {
+		const doc = new jsPDF({
+			orientation: 'landscape',
+			unit: 'mm',
+			format: 'a3',
+		});
 
-    doc.setFontSize(16);
-    doc.setTextColor(50, 50, 50);
+		doc.setDrawColor(0, 0, 0);
+		doc.setLineWidth(1);
+		doc.rect(10, 10, 400, 277, 'S');
 
-    const formData = [
-      { label: "Test Date", value: testDate },
-      { label: "HTMF Part Number", value: htmfPartNumber },
-      { label: "Customer Part Number", value: customerPartNumber },
-      { label: "Type", value: type },
-      { label: "Capacity/Volume", value: capacityVolume },
-      { label: "Serial Number", value: serialNumber },
-      { label: "Hydro Pressure (Bar)", value: hydroPressure },
-      { label: "Test Start Time", value: `${startTime} ${startAmPm}` },
-      { label: "Test End Time", value: `${endTime} ${endAmPm}` },
-      { label: "Welder Code", value: welderCode },
-      { label: "Operator Code", value: operator },
-      { label: "Witness Code", value: witnessBay },
-      { label: "Result", value: passFail },
-      { label: "Shell Thickness", value: shellThickness },
-      { label: "Cap Thickness", value: capThickness },
-      { label: "Flange Thickness", value: flangeThickness },
-      { label: "Material Grade", value: materialGrade },
-    ];
+		doc.setFillColor(240, 240, 240);
+		doc.rect(10, 10, 400, 277, 'F');
 
-    const tableData = formData.map(({ label, value }) => [label, value]);
+		doc.setFontSize(26);
+		doc.setFont('helvetica', 'bold');
+		doc.text('HYDROSTATIC TEST CERTIFICATE', 210, 40, null, null, 'center');
 
-    doc.autoTable({
-      startY: 70,
-      head: [["Field", "Details"]],
-      body: tableData,
-      theme: "grid",
-      styles: {
-        fontSize: 14,
-        cellPadding: 4,
-      },
-      headStyles: {
-        fillColor: [0, 102, 204],
-        textColor: 255,
-      },
-      bodyStyles: {
-        fillColor: [245, 245, 245],
-      },
-      margin: { top: 10 },
-    });
+		const logoImg = 'data:image/jpeg;base64,...'; // Replace with actual image URL/base64
+		doc.addImage(logoImg, 'JPEG', 30, 20, 70, 40);
 
-    const finalY = doc.autoTable.previous.finalY || 0;
-    const signatureYPosition = finalY + 20;
+		doc.setFontSize(16);
+		doc.setTextColor(50, 50, 50);
 
-    doc.setFontSize(14);
-    doc.text(
-      "Authorized Signature: ____________________",
-      30,
-      signatureYPosition
-    );
-    doc.text(
-      "Inspector's Signature: ____________________",
-      250,
-      signatureYPosition
-    );
+		const formData = [
+			{ label: 'Test Date', value: testDate },
+			{ label: 'HTMF Part Number', value: htmfPartNumber },
+			{ label: 'Customer Part Number', value: customerPartNumber },
+			{ label: 'Type', value: type },
+			{ label: 'Capacity/Volume', value: capacityVolume },
+			{ label: 'Serial Number', value: serialNumber },
+			{ label: 'Hydro Pressure (Bar)', value: hydroPressure },
+			{ label: 'Test Start Time', value: `${startTime} ${startAmPm}` },
+			{ label: 'Test End Time', value: `${endTime} ${endAmPm}` },
+			{ label: 'Welder Code', value: welderCode },
+			{ label: 'Operator Code', value: operator },
+			{ label: 'Witness Code', value: witnessBay },
+			{ label: 'Result', value: passFail },
+			{ label: 'Shell Thickness', value: shellThickness },
+			{ label: 'Cap Thickness', value: capThickness },
+			{ label: 'Flange Thickness', value: flangeThickness },
+			{ label: 'Material Grade', value: materialGrade },
+		];
 
-    doc.save(`Hydrostatic_Test_Certificate_${serialNumber}.pdf`);
-  };
+		const tableData = formData.map(({ label, value }) => [label, value]);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+		doc.autoTable({
+			startY: 70,
+			head: [['Field', 'Details']],
+			body: tableData,
+			theme: 'grid',
+			styles: {
+				fontSize: 14,
+				cellPadding: 4,
+			},
+			headStyles: {
+				fillColor: [0, 102, 204],
+				textColor: 255,
+			},
+			bodyStyles: {
+				fillColor: [245, 245, 245],
+			},
+			margin: { top: 10 },
+		});
 
-    const formData = {
-      testDate,
-      htmfPartNumber,
-      customerPartNumber,
-      type,
-      capacityVolume,
-      serialNumber,
-      hydroPressure,
-      startTime: `${startTime} ${startAmPm}`,
-      endTime: `${endTime} ${endAmPm}`,
-      welderCode,
-      operator,
-      witnessBay,
-      passFail,
-      shellThickness,
-      capThickness,
-      flangeThickness,
-      materialGrade,
-    };
+		const finalY = doc.autoTable.previous.finalY || 0;
+		const signatureYPosition = finalY + 20;
 
-    try {
-      const response = await fetch("http://localhost:5000/api/hydro/submit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+		doc.setFontSize(14);
+		doc.text(
+			'Authorized Signature: ____________________',
+			30,
+			signatureYPosition,
+		);
+		doc.text(
+			"Inspector's Signature: ____________________",
+			250,
+			signatureYPosition,
+		);
 
-      if (response.ok) {
-        alert("Form submitted successfully!");
-        generatePDF();
+		doc.save(`Hydrostatic_Test_Certificate_${serialNumber}.pdf`);
+	};
 
-        // Reset form fields
-        setTestDate(new Date().toISOString().split("T")[0]);
-        setHtmfPartNumber("");
-        setCustomerPartNumber("");
-        setType("");
-        setCapacityVolume("");
-        setSerialNumber(
-          `SN${new Date()
-            .toISOString()
-            .split("T")[0]
-            .replace(/-/g, "")}${Math.floor(1000 + Math.random() * 9000)}`
-        );
-        setHydroPressure("");
-        setStartTime("");
-        setEndTime("");
-        setStartAmPm("AM");
-        setEndAmPm("AM");
-        setWelderCode("");
-        setOperator("");
-        setWitnessBay("");
-        setPassFail("");
-        setShellThickness("");
-        setCapThickness("");
-        setFlangeThickness("");
-        setMaterialGrade("");
-      } else {
-        alert("Failed to submit the form");
-      }
-    } catch (error) {
-      console.error("Error submitting form:", error);
-      alert("Error submitting form");
-    }
-  };
+	const handleSubmit = async (event) => {
+		event.preventDefault();
 
-  return (
-    <>
-      <Header />
-      <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 mt-20">
-        <div className="w-full max-w-7xl mx-auto px-4">
-          <div className="bg-white shadow-lg sm:rounded-lg px-10 py-8">
-            <h1 className="text-3xl font-bold text-center mb-6">
-              Hydro Test Form
-            </h1>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Test Date */}
-              <div className="w-full">
-                <label className="block text-sm font-medium text-gray-700">
-                  Test Date
-                </label>
-                <input
-                  type="date"
-                  name="testDate"
-                  value={testDate}
-                  onChange={(e) => setTestDate(e.target.value)}
-                  className="w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                />
-              </div>
+		const formData = {
+			testDate,
+			htmfPartNumber,
+			customerPartNumber,
+			type,
+			capacityVolume,
+			serialNumber,
+			hydroPressure,
+			startTime: `${startTime} ${startAmPm}`,
+			endTime: `${endTime} ${endAmPm}`,
+			welderCode,
+			operator,
+			witnessBay,
+			passFail,
+			shellThickness,
+			capThickness,
+			flangeThickness,
+			materialGrade,
+		};
 
-              {/* HTMF Part Number */}
-              <div className="w-full">
-                <label className="block text-sm font-medium text-gray-700">
-                  HTMF Internal Part Number
-                </label>
-                <select
-                  value={htmfPartNumber}
-                  onChange={(e) => setHtmfPartNumber(e.target.value)}
-                  className="w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                >
-                  <option value="">Select Part Number</option>
-                  <option value="PN001">PN001</option>
-                  <option value="PN002">PN002</option>
-                  <option value="PN003">PN003</option>
-                </select>
-              </div>
+		try {
+			const response = await fetch('http://localhost:5000/api/hydro/submit', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(formData),
+			});
 
-              {/* Customer Part Number */}
-              <div className="w-full">
-                <label className="block text-sm font-medium text-gray-700">
-                  Customer Part Number
-                </label>
-                <input
-                  type="text"
-                  value={customerPartNumber}
-                  onChange={(e) => setCustomerPartNumber(e.target.value)}
-                  className="w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                />
-              </div>
+			if (response.ok) {
+				alert('Form submitted successfully!');
+				generatePDF();
 
-              {/* Type */}
-              <div className="w-full">
-                <label className="block text-sm font-medium text-gray-700">
-                  Type
-                </label>
-                <input
-                  type="text"
-                  value={type}
-                  onChange={(e) => setType(e.target.value)}
-                  className="w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                />
-              </div>
+				// Reset form fields
+				setTestDate(new Date().toISOString().split('T')[0]);
+				setHtmfPartNumber('');
+				setCustomerPartNumber('');
+				setType('');
+				setCapacityVolume('');
+				setSerialNumber(
+					`SN${new Date()
+						.toISOString()
+						.split('T')[0]
+						.replace(/-/g, '')}${Math.floor(1000 + Math.random() * 9000)}`,
+				);
+				setHydroPressure('');
+				setStartTime('');
+				setEndTime('');
+				setStartAmPm('AM');
+				setEndAmPm('AM');
+				setWelderCode('');
+				setOperator('');
+				setWitnessBay('');
+				setPassFail('');
+				setShellThickness('');
+				setCapThickness('');
+				setFlangeThickness('');
+				setMaterialGrade('');
+			} else {
+				alert('Failed to submit the form');
+			}
+		} catch (error) {
+			console.error('Error submitting form:', error);
+			alert('Error submitting form');
+		}
+	};
 
-              {/* Capacity Volume */}
-              <div className="w-full">
-                <label className="block text-sm font-medium text-gray-700">
-                  Capacity/Volume
-                </label>
-                <input
-                  type="text"
-                  value={capacityVolume}
-                  onChange={(e) => setCapacityVolume(e.target.value)}
-                  className="w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                />
-              </div>
+	return (
+		<>
+			<Header />
+			<div className='min-h-screen bg-gray-100 flex flex-col justify-center py-12 mt-20'>
+				<div className='w-full max-w-7xl mx-auto px-4'>
+					<div className='bg-white shadow-lg sm:rounded-lg px-10 py-8'>
+						<h1 className='text-3xl font-bold text-center mb-6'>
+							Hydro Test Form
+						</h1>
+						<form onSubmit={handleSubmit} className='space-y-6'>
+							{/* Test Date */}
+							<div className='w-full'>
+								<label className='block text-sm font-medium text-gray-700'>
+									Test Date
+								</label>
+								<input
+									type='date'
+									name='testDate'
+									value={testDate}
+									onChange={(e) => setTestDate(e.target.value)}
+									className='w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500'
+								/>
+							</div>
 
-              {/* Serial Number */}
-              <div className="w-full">
-                <label className="block text-sm font-medium text-gray-700">
-                  Serial Number
-                </label>
-                <input
-                  type="text"
-                  value={serialNumber}
-                  readOnly
-                  className="w-full mt-1 p-3 border border-gray-300 rounded-md bg-gray-200 cursor-not-allowed"
-                />
-              </div>
+							<div className='w-full'>
+								<label className='block text-sm font-medium text-gray-700'>
+									HTMF PART NUMBER
+								</label>
+								<input
+									value={htmfPartNumber}
+									type='text'
+									onChange={(e) => {
+										const value = e.target.value.toLowerCase();
+										setHtmfPartNumber(value); // Update the state here
+										const filtered = savedhtmf.filter((item) =>
+											item.htmfNo.toLowerCase().includes(value),
+										);
+										setFilteredHTMF(filtered);
+										setIsSelected(true); // Set selection state
+									}}
+									className='w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500'
+									aria-label='HTMF Part Number Input'
+									aria-describedby='filtered-results'
+								/>
+								{filteredHTMF.length > 0 && isSelected ? (
+									<ul
+										id='filtered-results'
+										className='border border-gray-300 rounded-md mt-2 max-h-40 overflow-y-auto'>
+										{filteredHTMF.map((item, index) => (
+											<li
+												key={index}
+												onClick={() => handleOptionClick(item)}
+												className='cursor-pointer p-2 hover:bg-gray-200 focus:bg-gray-300'
+												tabIndex={0}
+												role='option'
+												aria-selected='false'>
+												{item.htmfNo}
+											</li>
+										))}
+									</ul>
+								) : (
+									isSelected && (
+										<div className='p-2 text-gray-500'>No results found</div>
+									)
+								)}
+							</div>
 
-              {/* Hydro Pressure */}
-              <div className="w-full">
-                <label className="block text-sm font-medium text-gray-700">
-                  Hydro Pressure (Bar)
-                </label>
-                <input
-                  type="text"
-                  value={hydroPressure}
-                  onChange={(e) => setHydroPressure(e.target.value)}
-                  className="w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                />
-              </div>
+							{/* Customer Part Number */}
+							<div className='w-full'>
+								<label className='block text-sm font-medium text-gray-700'>
+									Customer Part Number
+								</label>
+								<input
+									type='text'
+									value={customerPartNumber}
+									onChange={(e) => setCustomerPartNumber(e.target.value)}
+									className='w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500'
+								/>
+							</div>
 
-              {/* Start Time */}
-              <div className="w-full">
-                <label className="block text-sm font-medium text-gray-700">
-                  Start Time
-                </label>
-                <div className="flex space-x-4">
-                  <input
-                    type="time"
-                    value={startTime}
-                    onChange={(e) => setStartTime(e.target.value)}
-                    className="flex-1 mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  />
-                  <select
-                    value={startAmPm}
-                    onChange={(e) => setStartAmPm(e.target.value)}
-                    className="mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  >
-                    <option value="AM">AM</option>
-                    <option value="PM">PM</option>
-                  </select>
-                </div>
-              </div>
+							{/* Type */}
+							<div className='w-full'>
+								<label className='block text-sm font-medium text-gray-700'>
+									Type
+								</label>
+								<input
+									type='text'
+									value={type}
+									onChange={(e) => setType(e.target.value)}
+									className='w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500'
+								/>
+							</div>
 
-              {/* End Time */}
-              <div className="w-full">
-                <label className="block text-sm font-medium text-gray-700">
-                  End Time
-                </label>
-                <div className="flex space-x-4">
-                  <input
-                    type="time"
-                    value={endTime}
-                    onChange={(e) => setEndTime(e.target.value)}
-                    className="flex-1 mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  />
-                  <select
-                    value={endAmPm}
-                    onChange={(e) => setEndAmPm(e.target.value)}
-                    className="mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  >
-                    <option value="AM">AM</option>
-                    <option value="PM">PM</option>
-                  </select>
-                </div>
-              </div>
+							{/* Capacity Volume */}
+							<div className='w-full'>
+								<label className='block text-sm font-medium text-gray-700'>
+									Capacity/Volume
+								</label>
+								<input
+									type='text'
+									value={capacityVolume}
+									onChange={(e) => setCapacityVolume(e.target.value)}
+									className='w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500'
+								/>
+							</div>
 
-              {/* Welder Code */}
-              <div className="w-full">
-                <label className="block text-sm font-medium text-gray-700">
-                  Welder Code
-                </label>
-                <input
-                  type="text"
-                  value={welderCode}
-                  onChange={(e) => setWelderCode(e.target.value)}
-                  className="w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                />
-              </div>
+							{/* Serial Number */}
+							<div className='w-full'>
+								<label className='block text-sm font-medium text-gray-700'>
+									Serial Number
+								</label>
+								<input
+									type='text'
+									value={serialNumber}
+									readOnly
+									className='w-full mt-1 p-3 border border-gray-300 rounded-md bg-gray-200 cursor-not-allowed'
+								/>
+							</div>
 
-              {/* Operator Code */}
-              <div className="w-full">
-                <label className="block text-sm font-medium text-gray-700">
-                  Operator Code
-                </label>
-                <input
-                  type="text"
-                  value={operator}
-                  onChange={(e) => setOperator(e.target.value)}
-                  className="w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                />
-              </div>
+							{/* Hydro Pressure */}
+							<div className='w-full'>
+								<label className='block text-sm font-medium text-gray-700'>
+									Hydro Pressure (Bar)
+								</label>
+								<input
+									type='text'
+									value={hydroPressure}
+									onChange={(e) => setHydroPressure(e.target.value)}
+									className='w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500'
+								/>
+							</div>
 
-              {/* Witness Bay */}
-              <div className="w-full">
-                <label className="block text-sm font-medium text-gray-700">
-                  Witness Bay
-                </label>
-                <input
-                  type="text"
-                  value={witnessBay}
-                  onChange={(e) => setWitnessBay(e.target.value)}
-                  className="w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                />
-              </div>
+							{/* Start Time */}
+							<div className='w-full'>
+								<label className='block text-sm font-medium text-gray-700'>
+									Start Time
+								</label>
+								<div className='flex space-x-4'>
+									<input
+										type='time'
+										value={startTime}
+										onChange={(e) => setStartTime(e.target.value)}
+										className='flex-1 mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500'
+									/>
+									<select
+										value={startAmPm}
+										onChange={(e) => setStartAmPm(e.target.value)}
+										className='mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500'>
+										<option value='AM'>AM</option>
+										<option value='PM'>PM</option>
+									</select>
+								</div>
+							</div>
 
-              {/* Pass/Fail */}
-              <div className="w-full">
-                <label className="block text-sm font-medium text-gray-700">
-                  Result (Pass/Fail)
-                </label>
-                <select
-                  value={passFail}
-                  onChange={handlePassFailChange}
-                  className="w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                >
-                  <option value="">Select Result</option>
-                  <option value="Pass">Pass</option>
-                  <option value="Fail">Fail</option>
-                </select>
-              </div>
+							{/* End Time */}
+							<div className='w-full'>
+								<label className='block text-sm font-medium text-gray-700'>
+									End Time
+								</label>
+								<div className='flex space-x-4'>
+									<input
+										type='time'
+										value={endTime}
+										onChange={(e) => setEndTime(e.target.value)}
+										className='flex-1 mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500'
+									/>
+									<select
+										value={endAmPm}
+										onChange={(e) => setEndAmPm(e.target.value)}
+										className='mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500'>
+										<option value='AM'>AM</option>
+										<option value='PM'>PM</option>
+									</select>
+								</div>
+							</div>
 
-              {/* Thickness Fields */}
-              <div className="flex space-x-4">
-                <div className="flex-1">
-                  <label className="block text-sm font-medium text-gray-700">
-                    Shell Thickness
-                  </label>
-                  <input
-                    type="text"
-                    value={shellThickness}
-                    onChange={(e) => setShellThickness(e.target.value)}
-                    className="w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  />
-                </div>
-                <div className="flex-1">
-                  <label className="block text-sm font-medium text-gray-700">
-                    Cap Thickness
-                  </label>
-                  <input
-                    type="text"
-                    value={capThickness}
-                    onChange={(e) => setCapThickness(e.target.value)}
-                    className="w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  />
-                </div>
-                <div className="flex-1">
-                  <label className="block text-sm font-medium text-gray-700">
-                    Flange Thickness
-                  </label>
-                  <input
-                    type="text"
-                    value={flangeThickness}
-                    onChange={(e) => setFlangeThickness(e.target.value)}
-                    className="w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  />
-                </div>
-              </div>
+							{/* Welder Code */}
+							<div className='w-full'>
+								<label className='block text-sm font-medium text-gray-700'>
+									Welder Code
+								</label>
+								<input
+									type='text'
+									value={welderCode}
+									onChange={(e) => setWelderCode(e.target.value)}
+									className='w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500'
+								/>
+							</div>
 
-              {/* Material Grade */}
-              <div className="w-full">
-                <label className="block text-sm font-medium text-gray-700">
-                  Material Grade
-                </label>
-                <input
-                  type="text"
-                  value={materialGrade}
-                  onChange={(e) => setMaterialGrade(e.target.value)}
-                  className="w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                />
-              </div>
+							{/* Operator Code */}
+							<div className='w-full'>
+								<label className='block text-sm font-medium text-gray-700'>
+									Operator Code
+								</label>
+								<input
+									type='text'
+									value={operator}
+									onChange={(e) => setOperator(e.target.value)}
+									className='w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500'
+								/>
+							</div>
 
-              <button
-                type="submit"
-                className="w-full mt-4 p-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                Generate Certificate
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
-      <Footer />
-    </>
-  );
+							{/* Witness Bay */}
+							<div className='w-full'>
+								<label className='block text-sm font-medium text-gray-700'>
+									Witness Bay
+								</label>
+								<input
+									type='text'
+									value={witnessBay}
+									onChange={(e) => setWitnessBay(e.target.value)}
+									className='w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500'
+								/>
+							</div>
+
+							{/* Pass/Fail */}
+							<div className='w-full'>
+								<label className='block text-sm font-medium text-gray-700'>
+									Result (Pass/Fail)
+								</label>
+								<select
+									value={passFail}
+									onChange={handlePassFailChange}
+									className='w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500'>
+									<option value=''>Select Result</option>
+									<option value='Pass'>Pass</option>
+									<option value='Fail'>Fail</option>
+								</select>
+							</div>
+
+							{/* Thickness Fields */}
+							<div className='flex space-x-4'>
+								<div className='flex-1'>
+									<label className='block text-sm font-medium text-gray-700'>
+										Shell Thickness
+									</label>
+									<input
+										type='text'
+										value={shellThickness}
+										onChange={(e) => setShellThickness(e.target.value)}
+										className='w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500'
+									/>
+								</div>
+								<div className='flex-1'>
+									<label className='block text-sm font-medium text-gray-700'>
+										Cap Thickness
+									</label>
+									<input
+										type='text'
+										value={capThickness}
+										onChange={(e) => setCapThickness(e.target.value)}
+										className='w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500'
+									/>
+								</div>
+								<div className='flex-1'>
+									<label className='block text-sm font-medium text-gray-700'>
+										Flange Thickness
+									</label>
+									<input
+										type='text'
+										value={flangeThickness}
+										onChange={(e) => setFlangeThickness(e.target.value)}
+										className='w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500'
+									/>
+								</div>
+							</div>
+
+							{/* Material Grade */}
+							<div className='w-full'>
+								<label className='block text-sm font-medium text-gray-700'>
+									Material Grade
+								</label>
+								<input
+									type='text'
+									value={materialGrade}
+									onChange={(e) => setMaterialGrade(e.target.value)}
+									className='w-full mt-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500'
+								/>
+							</div>
+
+							<button
+								type='submit'
+								className='w-full mt-4 p-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500'>
+								Generate Certificate
+							</button>
+						</form>
+					</div>
+				</div>
+			</div>
+			<Footer />
+		</>
+	);
 };
 
 export default Hydro;
