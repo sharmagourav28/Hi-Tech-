@@ -48,7 +48,7 @@ const Header = () => {
             </li>
             <li>
               <Link
-                to="/product"
+                to="/paneladmin"
                 className="hover:text-blue-600 block font-bold transition-all"
               >
                 Product

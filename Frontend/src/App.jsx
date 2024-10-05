@@ -9,6 +9,7 @@ import Login from "./comp/Login.jsx";
 import Admin from "./comp/admin.jsx";
 import Setting from "./comp/Setting.jsx";
 import Product from "./comp/Product.jsx";
+import Paneladmin from "./comp/Paneladmin.jsx";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -20,7 +21,7 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/hydro" element={<Hydro />} />
         <Route path="/pdi" element={<Pdi />} />
-
+        <Route path="/paneladmin" element={<Paneladmin />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/setting" element={<Setting />} />
         <Route path="/product" element={<Product />} />
