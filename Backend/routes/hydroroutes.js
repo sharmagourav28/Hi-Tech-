@@ -14,6 +14,7 @@ const {
 } = require("../controllers/hydroController");
 
 const Hydro = require("../models/Hydro");
+const HydroTest = require("../models/RecordHydro");
 
 const router = express.Router();
 
@@ -47,6 +48,36 @@ router.get("/check/:serialNumber", async (req, res) => {
     res
       .status(500)
       .json({ message: "Error checking serial number", error: error.message });
+  }
+});
+
+router.get("/allCustomerPartNumber", async (req, res) => {
+  try {
+    // Query to get only the customerPartNumber field from all entries
+    const results = await HydroTest.find({}, "htmfNo");
+    console.log("Customer Part Numbers:", results);
+    res.status(200).json(results); // Send the results as a JSON response
+  } catch (err) {
+    console.error("Error fetching customer part numbers:", err);
+    res.status(500).json({ error: "Failed to fetch customer part numbers" });
+  }
+});
+
+router.get("/ht/:id", async (req, res) => {
+  const { id } = req.params; // Get the ID from the request parameters
+
+  try {
+    const result = await HydroTest.findById(id); // Fetch the document by ID
+
+    if (result) {
+      res.status(200).json(result); // Send back the found document
+      console.log(result);
+    } else {
+      res.status(404).json({ message: "Item not found" }); // Handle not found case
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" }); // Handle server errors
   }
 });
 
