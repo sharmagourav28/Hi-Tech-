@@ -61,8 +61,8 @@ const Admin = () => {
   return (
     <>
       <Header />
-      <div className="p-6 pt-10 bg-gradient-to-r from-blue-50 to-indigo-50 min-h-screen w-full mt-20">
-        <h2 className="text-4xl font-extrabold mb-8 text-center text-indigo-600">
+      <div className="p-6 pt-10 bg-gray-50 min-h-screen w-full ">
+        <h2 className="text-4xl font-extrabold mb-8 text-center text-indigo-800">
           Hydro Test Records
         </h2>
 
@@ -109,33 +109,47 @@ const Admin = () => {
         <div className="overflow-x-auto w-full">
           <table className="min-w-full bg-white border rounded-lg shadow-lg">
             <thead>
-              <tr className="bg-gray-100">
-                <th className="px-2 py-2 font-semibold text-sm">Test Date</th>
-                <th className="px-2 py-2 font-semibold text-sm">
+              <tr className="bg-indigo-200">
+                <th className="px-2 py-2 font-semibold text-sm text-indigo-800">
+                  Test Date
+                </th>
+                <th className="px-2 py-2 font-semibold text-sm text-indigo-800">
                   HTMF Part Number
                 </th>
-                <th className="px-2 py-2 font-semibold text-sm">
+                <th className="px-2 py-2 font-semibold text-sm text-indigo-800">
                   Customer Part Number
                 </th>
-                <th className="px-2 py-2 font-semibold text-sm">
+                <th className="px-2 py-2 font-semibold text-sm text-indigo-800">
                   Serial Number
                 </th>
-                <th className="px-2 py-2 font-semibold text-sm">
+                <th className="px-2 py-2 font-semibold text-sm text-indigo-800">
                   Hydro Pressure
                 </th>
-                <th className="px-2 py-2 font-semibold text-sm">Start Time</th>
-                <th className="px-2 py-2 font-semibold text-sm">End Time</th>
-                <th className="px-2 py-2 font-semibold text-sm">Welder Code</th>
-                <th className="px-2 py-2 font-semibold text-sm">Operator</th>
-                <th className="px-2 py-2 font-semibold text-sm">Witness Bay</th>
-                <th className="px-2 py-2 font-semibold text-sm">Result</th>
+                <th className="px-2 py-2 font-semibold text-sm text-indigo-800">
+                  Start Time
+                </th>
+                <th className="px-2 py-2 font-semibold text-sm text-indigo-800">
+                  End Time
+                </th>
+                <th className="px-2 py-2 font-semibold text-sm text-indigo-800">
+                  Welder Code
+                </th>
+                <th className="px-2 py-2 font-semibold text-sm text-indigo-800">
+                  Operator
+                </th>
+                <th className="px-2 py-2 font-semibold text-sm text-indigo-800">
+                  Witness Bay
+                </th>
+                <th className="px-2 py-2 font-semibold text-sm text-indigo-800">
+                  Result
+                </th>
               </tr>
             </thead>
             <tbody>
               {currentRecords.map((test) => (
                 <tr
                   key={test._id}
-                  className={`border-b hover:bg-gray-50 transition ${
+                  className={`border-b hover:bg-indigo-50 transition ${
                     test.passFail === "Fail"
                       ? "bg-red-50 border-l-4 border-red-500"
                       : ""

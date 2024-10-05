@@ -6,7 +6,7 @@ import {
   FaInstagram,
   FaEye,
   FaEyeSlash,
-} from "react-icons/fa"; // Import the eye icons
+} from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -15,14 +15,8 @@ const Login = () => {
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [selectedRole, setSelectedRole] = useState("Admin");
-  const [showPassword, setShowPassword] = useState(false); // State for password visibility
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-
-  const credentials = {
-    Admin: { userId: "adminUser", password: "adminPass" },
-    "PDI Tester": { userId: "pdiUser", password: "pdiPass" },
-    "Hydro Tester": { userId: "hydroUser", password: "hydroPass" },
-  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -32,11 +26,12 @@ const Login = () => {
         userId,
         password,
       });
-      console.log(res);
+
       if (res.data.message === "Login successful" && res.status === 200) {
+        toast.success(`Successfully logged in as ${selectedRole}!`); // Success notification
         const roleRoutes = {
           hydro: "/hydro",
-          admin: "/admin",
+          admin: "/dashboard",
           pdi: "/pdi",
         };
 
@@ -48,35 +43,15 @@ const Login = () => {
         }
       }
     } catch (error) {
-      console.log(error);
+      // If there's an error (invalid credentials)
+      toast.error("Invalid User ID or Password!"); // Error notification
+      console.error(error);
     }
-
-    //   if (
-    //     userId === credentials[selectedRole].userId &&
-    //     password === credentials[selectedRole].password
-    //   ) {
-    //     toast.success(`Successfully logged in as ${selectedRole}!`);
-
-    //     switch (selectedRole) {
-    //       case "Admin":
-    //         navigate("/admin", { state: { role: selectedRole } });
-    //         break;
-    //       case "Hydro Tester":
-    //         navigate("/hydro", { state: { role: selectedRole } });
-    //         break;
-    //       case "PDI Tester":
-    //         navigate("/pdi", { state: { role: selectedRole } });
-    //         break;
-    //       default:
-    //         break;
-    //     }
-    //   } else {
-    //     toast.error("Invalid User ID or Password!");
-    //   }
   };
 
   return (
     <>
+      <ToastContainer /> {/* Add this to display the toast notifications */}
       <div
         className="sm:flex h-screen"
         style={{
@@ -143,7 +118,7 @@ const Login = () => {
               />
               <div className="relative mb-4">
                 <input
-                  type={showPassword ? "text" : "password"} // Toggle between text and password
+                  type={showPassword ? "text" : "password"}
                   className="w-full p-3 md:p-4 border border-gray-300 rounded-md focus:border-blue-500 focus:ring focus:ring-blue-200"
                   placeholder="Password"
                   value={password}
@@ -153,10 +128,9 @@ const Login = () => {
                 <button
                   type="button"
                   className="absolute inset-y-0 right-0 flex items-center pr-3"
-                  onClick={() => setShowPassword((prev) => !prev)} // Toggle password visibility
+                  onClick={() => setShowPassword((prev) => !prev)}
                 >
-                  {showPassword ? <FaEyeSlash /> : <FaEye />}{" "}
-                  {/* Toggle icon */}
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </button>
               </div>
               <div className="flex items-center mb-4">
@@ -166,7 +140,7 @@ const Login = () => {
                 </label>
               </div>
               <button
-                type="submit" // Use type="submit" to trigger form submission
+                type="submit"
                 className="w-full p-3 md:p-4 bg-orange-500 text-white rounded-md hover:bg-orange-600 transition"
               >
                 Sign in now

@@ -3,6 +3,7 @@ import jsPDF from "jspdf";
 import Header from "./Header";
 import Footer from "./Footer";
 
+import "jspdf-autotable";
 const Hydro = () => {
   const [testDate, setTestDate] = useState(() => {
     const today = new Date().toISOString().split("T")[0];
@@ -30,17 +31,33 @@ const Hydro = () => {
 
   const generatePDF = () => {
     const doc = new jsPDF({
-      orientation: "landscape", // Landscape for A3
+      orientation: "landscape", // Keep landscape for wider pages
       unit: "mm",
-      format: "a3",
+      format: "a3", // Change to A3 format
     });
 
-    // Add content to PDF
-    doc.setFontSize(16);
-    doc.text("Hydrostatic Test Certificate", 150, 20, null, null, "center");
+    // Custom styling: Borders, color, and font sizes
+    doc.setDrawColor(0, 0, 0);
+    doc.setLineWidth(1);
+    doc.rect(10, 10, 400, 277, "S"); // Adjust dimensions to fit A3 size
 
-    // Form data content
-    doc.setFontSize(12);
+    // Adding a background color (optional)
+    doc.setFillColor(240, 240, 240); // Light gray
+    doc.rect(10, 10, 400, 277, "F"); // Adjust dimensions for background
+
+    // Title of Certificate
+    doc.setFontSize(26); // Increase font size for A3
+    doc.setFont("helvetica", "bold");
+    doc.text("HYDROSTATIC TEST CERTIFICATE", 210, 40, null, null, "center"); // Adjust Y-position
+
+    // Logo (if you have an image URL or base64 encoded image)
+    const logoImg = "data:image/jpeg;base64,..."; // Replace with actual image URL/base64
+    doc.addImage(logoImg, "JPEG", 30, 20, 70, 40); // Adjust logo position and size for A3
+
+    // Add form data content in a table format
+    doc.setFontSize(16); // Increase font size slightly for larger paper
+    doc.setTextColor(50, 50, 50);
+
     const formData = [
       { label: "Test Date", value: testDate },
       { label: "HTMF Part Number", value: htmfPartNumber },
@@ -55,12 +72,44 @@ const Hydro = () => {
       { label: "Result", value: passFail },
     ];
 
-    let yPosition = 40;
+    // Set up table structure
+    const tableData = formData.map(({ label, value }) => [label, value]);
 
-    formData.forEach(({ label, value }) => {
-      doc.text(`${label}: ${value}`, 20, yPosition);
-      yPosition += 10;
+    doc.autoTable({
+      startY: 70, // Adjust starting Y-position for A3
+      head: [["Field", "Details"]],
+      body: tableData,
+      theme: "grid",
+      styles: {
+        fontSize: 14, // Adjust font size for readability on A3
+        cellPadding: 4,
+      },
+      headStyles: {
+        fillColor: [0, 102, 204], // Blue header color
+        textColor: 255,
+      },
+      bodyStyles: {
+        fillColor: [245, 245, 245], // Light gray for data rows
+      },
+      margin: { top: 10 },
     });
+
+    // Add a footer with signature lines
+    // After rendering the table
+    const finalY = doc.autoTable.previous.finalY || 0; // Get the position where the table ends
+    const signatureYPosition = finalY + 20; // Add some space below the table
+
+    doc.setFontSize(14);
+    doc.text(
+      "Authorized Signature: ____________________",
+      30,
+      signatureYPosition
+    );
+    doc.text(
+      "Inspector's Signature: ____________________",
+      250,
+      signatureYPosition
+    );
 
     // Save the PDF
     doc.save(`Hydrostatic_Test_Certificate_${serialNumber}.pdf`);

@@ -24,22 +24,6 @@ const Header = () => {
           <ul className="lg:flex lg:ml-12 lg:gap-x-6">
             <li>
               <Link
-                to="/admin"
-                className="hover:text-blue-600 block font-bold transition-all"
-              >
-                ADMIN
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/setting"
-                className="hover:text-blue-600 block font-bold transition-all"
-              >
-                SETTINGS
-              </Link>
-            </li>
-            <li>
-              <Link
                 to="/pdi"
                 className="hover:text-blue-600 block font-bold transition-all"
               >
@@ -60,6 +44,14 @@ const Header = () => {
                 className="hover:text-blue-600 block font-bold transition-all"
               >
                 Dashboard
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/product"
+                className="hover:text-blue-600 block font-bold transition-all"
+              >
+                Product
               </Link>
             </li>
           </ul>

@@ -31,6 +31,7 @@ const Pdi = () => {
   });
   const [remark, setRemark] = useState("");
   const [serialNumber, setSerialNumber] = useState("");
+  const [customerPartNumber, setCustomerPartNumber] = useState(""); // State for customer part number
   const [checkStatus, setCheckStatus] = useState(""); // State to hold check result
   const [errorMessage, setErrorMessage] = useState(""); // State for error messages
 
@@ -45,6 +46,7 @@ const Pdi = () => {
       testDate,
       remark,
       serialNumber,
+      customerPartNumber, // Log the customer part number
     });
     alert("Certificate Generated!");
   };
@@ -148,6 +150,25 @@ const Pdi = () => {
                 value={remark}
                 onChange={(e) => setRemark(e.target.value)}
                 placeholder="Add any remarks"
+                className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+              />
+            </div>
+
+            {/* Customer Part Number */}
+            <div className="mb-5">
+              <label
+                htmlFor="customerPartNumber"
+                className="mb-3 block text-base font-medium text-[#07074D]"
+              >
+                Customer Part Number
+              </label>
+              <input
+                type="text"
+                name="customerPartNumber"
+                id="customerPartNumber"
+                value={customerPartNumber}
+                onChange={(e) => setCustomerPartNumber(e.target.value)}
+                placeholder="Enter customer part number"
                 className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
               />
             </div>
