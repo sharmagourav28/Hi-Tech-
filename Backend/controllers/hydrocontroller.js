@@ -1,6 +1,7 @@
 const PDFDocument = require("pdfkit");
 const fs = require("fs");
 const Hydro = require("../models/Hydro");
+const RecordHydro = require("../models/RecordHydro");
 
 // Save hydro test data
 exports.saveHydroData = async (req, res) => {
@@ -71,5 +72,38 @@ exports.getHydroCertificate = async (req, res) => {
     res.download(filePath, `${hydroData.serialNumber}_certificate.pdf`);
   } catch (error) {
     res.status(500).json({ message: "Error generating certificate", error });
+  }
+};
+
+// Hydro data record from admin
+exports.createHydroTest = async (req, res) => {
+  const { htmfNo, customerPartNo, type, capacityVolume, pressureBar } =
+    req.body;
+
+  try {
+    const newRecord = new RecordHydro({
+      htmfNo,
+      customerPartNo,
+      type,
+      capacityVolume,
+      pressureBar,
+    });
+
+    await newRecord.save();
+    res.status(201).json({ message: "Hydro Test record saved successfully!" });
+  } catch (error) {
+    console.error("Error saving Hydro Test record:", error);
+    res.status(500).json({ error: "Failed to save Hydro Test record" });
+  }
+};
+
+// Get all hydro test records
+exports.getHydroTests = async (req, res) => {
+  try {
+    const records = await RecordHydro.find();
+    res.status(200).json(records);
+  } catch (error) {
+    console.error("Error fetching Hydro Test records:", error);
+    res.status(500).json({ error: "Failed to fetch Hydro Test records" });
   }
 };

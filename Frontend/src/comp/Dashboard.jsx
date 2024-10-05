@@ -12,6 +12,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import Admin from "./admin";
+import RecordHydro from "./RecordHydro";
 
 const Dashboard = () => {
   const [stats, setStats] = useState({
@@ -313,6 +314,7 @@ const Dashboard = () => {
         </div>
       </div>
       <Admin />
+      <RecordHydro />
       <ToastContainer />
     </>
   );
