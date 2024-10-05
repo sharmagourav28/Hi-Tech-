@@ -3,10 +3,12 @@ const {
   saveHydroData,
   getAllHydroData,
   getHydroCertificate,
-  createHydroTest, // Import these two functions
-} = require("../controllers/hydrocontroller");
+  createHydroTest,
+  getHydroTests,
+  deleteHydroTest,
+} = require("../controllers/hydroController");
 
-const Hydro = require("../models/Hydro"); // Adjust the path as necessary
+const Hydro = require("../models/Hydro");
 
 const router = express.Router();
 
@@ -20,7 +22,9 @@ router.get("/all", getAllHydroData);
 router.get("/certificate/:id", getHydroCertificate);
 
 // POST route to create a new hydro test record
-router.post("/tests", createHydroTest);
+router.post("/tests/", createHydroTest);
+router.get("/tests", getHydroTests);
+router.delete("/tests/:id", deleteHydroTest);
 
 // New route to check serial number
 router.get("/check/:serialNumber", async (req, res) => {

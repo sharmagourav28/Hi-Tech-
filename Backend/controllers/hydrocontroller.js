@@ -76,34 +76,82 @@ exports.getHydroCertificate = async (req, res) => {
 };
 
 // Hydro data record from admin
+
+exports.getHydroTests = async (req, res) => {
+  try {
+    const hydroTests = await RecordHydro.find();
+    res.status(200).json(hydroTests);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching hydro test records" });
+  }
+};
+
+// Create a new hydro test record
 exports.createHydroTest = async (req, res) => {
-  const { htmfNo, customerPartNo, type, capacityVolume, pressureBar } =
-    req.body;
+  const {
+    htmfNo,
+    customerPartNo,
+    type,
+    capacityVolume,
+    pressureBar,
+    shellThickness,
+    capThickness,
+    flangeThickness,
+    materialGrade,
+  } = req.body;
+
+  // Validation: Check for missing fields
+  if (
+    !htmfNo ||
+    !customerPartNo ||
+    !type ||
+    !capacityVolume ||
+    !pressureBar ||
+    !shellThickness ||
+    !capThickness ||
+    !flangeThickness ||
+    !materialGrade
+  ) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
 
   try {
-    const newRecord = new RecordHydro({
+    const newTest = new RecordHydro({
       htmfNo,
       customerPartNo,
       type,
       capacityVolume,
       pressureBar,
+      shellThickness,
+      capThickness,
+      flangeThickness,
+      materialGrade,
     });
 
-    await newRecord.save();
-    res.status(201).json({ message: "Hydro Test record saved successfully!" });
+    await newTest.save();
+    res.status(201).json({ message: "Hydro Test record created successfully" });
   } catch (error) {
-    console.error("Error saving Hydro Test record:", error);
-    res.status(500).json({ error: "Failed to save Hydro Test record" });
+    console.error("Error creating hydro test record:", error);
+    res
+      .status(500)
+      .json({
+        message: "Error creating hydro test record",
+        error: error.message,
+      });
   }
 };
 
-// Get all hydro test records
-exports.getHydroTests = async (req, res) => {
+// Delete a hydro test record
+exports.deleteHydroTest = async (req, res) => {
+  const { id } = req.params;
+
   try {
-    const records = await RecordHydro.find();
-    res.status(200).json(records);
+    const hydroTest = await RecordHydro.findByIdAndDelete(id);
+    if (!hydroTest) {
+      return res.status(404).json({ message: "Hydro test record not found" });
+    }
+    res.status(200).json({ message: "Hydro test record deleted successfully" });
   } catch (error) {
-    console.error("Error fetching Hydro Test records:", error);
-    res.status(500).json({ error: "Failed to fetch Hydro Test records" });
+    res.status(500).json({ message: "Error deleting hydro test record" });
   }
 };

@@ -65,6 +65,7 @@ const Dashboard = () => {
   }, []);
 
   const handleDeleteUser = async (userId) => {
+    console.log(userId);
     try {
       const response = await axios.delete(
         `http://localhost:5000/api/users/${userId}`
@@ -313,8 +314,9 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-      <Admin />
       <RecordHydro />
+      <Admin />
+
       <ToastContainer />
     </>
   );
