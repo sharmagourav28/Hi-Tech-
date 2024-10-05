@@ -6,7 +6,10 @@ const {
   createHydroTest,
   getHydroTests,
   deleteHydroTest,
-} = require("../controllers/hydroController");
+  saveWelderData,
+  getAllWelders,
+  deleteWelderById,
+} = require("../controllers/hydrocontroller");
 
 const Hydro = require("../models/Hydro");
 const HydroTest = require("../models/RecordHydro");
@@ -27,6 +30,9 @@ router.post("/tests/", createHydroTest);
 router.get("/tests", getHydroTests);
 router.delete("/tests/:id", deleteHydroTest);
 
+router.post("/welders", saveWelderData);
+router.get("/welders", getAllWelders);
+router.delete("/welders/:id", deleteWelderById);
 // New route to check serial number
 router.get("/check/:serialNumber", async (req, res) => {
   try {
