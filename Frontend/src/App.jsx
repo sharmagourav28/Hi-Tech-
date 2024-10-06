@@ -11,6 +11,13 @@ import Setting from "./comp/Setting.jsx";
 import Product from "./comp/Product.jsx";
 import Paneladmin from "./comp/Paneladmin.jsx";
 
+// admin folder
+import Mainpage from "./admin/Mainpage.jsx";
+import Pdipage from "./admin/Pdipage.jsx";
+import Hydropage from "./admin/Hydropage.jsx";
+import Userpage from "./admin/Userpage.jsx";
+import Productpage from "./admin/Productpage.jsx";
+
 function App() {
   const [count, setCount] = useState(0);
 
@@ -26,6 +33,11 @@ function App() {
         <Route path="/setting" element={<Setting />} />
         <Route path="/product" element={<Product />} />
         <Route path="/admin" element={<Admin />} />
+        <Route path="/mainpage" element={<Mainpage />} />
+        <Route path="/pdipage" element={<Pdipage />} />
+        <Route path="/hydropage" element={<Hydropage />} />
+        <Route path="/userpage" element={<Userpage />} />
+        <Route path="/productpage" element={<Productpage />} />
       </Routes>
       {/* <Footer /> */}
     </Router>
