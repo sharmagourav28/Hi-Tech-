@@ -1,6 +1,7 @@
 import React from "react";
 import Mainpage from "./Mainpage";
 import { Link } from "react-router-dom";
+import Dashboard from "../comp/Dashboard";
 
 const Sidebar = () => {
   return (

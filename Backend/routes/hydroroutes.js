@@ -13,55 +13,63 @@ const {
 
 const Hydro = require("../models/Hydro");
 const HydroTest = require("../models/RecordHydro");
+const Welder = require('../models/Welder');
 
 const router = express.Router();
 
 // Route to save hydro test data
-router.post("/submit", saveHydroData);
+router.post('/submit', saveHydroData);
 
 // Route to fetch all hydro test data
-router.get("/all", getAllHydroData);
+router.get('/all', getAllHydroData);
 
 // Route to get certificate by ID
-router.get("/certificate/:id", getHydroCertificate);
+router.get('/certificate/:id', getHydroCertificate);
 
 // POST route to create a new hydro test record
-router.post("/tests/", createHydroTest);
-router.get("/tests", getHydroTests);
-router.delete("/tests/:id", deleteHydroTest);
+router.post('/tests/', createHydroTest);
+router.get('/tests', getHydroTests);
+router.delete('/tests/:id', deleteHydroTest);
 
-router.post("/welders", saveWelderData);
-router.get("/welders", getAllWelders);
-router.delete("/welders/:id", deleteWelderById);
+router.post('/welders', saveWelderData);
+router.get('/welders', getAllWelders);
+router.delete('/welders/:id', deleteWelderById);
 // New route to check serial number
-router.get("/check/:serialNumber", async (req, res) => {
-  try {
-    const { serialNumber } = req.params;
-    const hydroData = await Hydro.findOne({ serialNumber });
+router.get('/check/:serialNumber', async (req, res) => {
+	try {
+		const { serialNumber } = req.params;
+		const hydroData = await Hydro.findOne({ serialNumber });
 
-    if (!hydroData) {
-      return res.status(404).json({ message: "Record not found" });
-    }
+		if (!hydroData) {
+			return res.status(404).json({ message: 'Record not found' });
+		}
 
-    res.status(200).json({ result: hydroData.passFail });
-  } catch (error) {
-    console.error("Error checking serial number:", error);
-    res
-      .status(500)
-      .json({ message: "Error checking serial number", error: error.message });
-  }
+		res.status(200).json({ result: hydroData.passFail });
+	} catch (error) {
+		console.error('Error checking serial number:', error);
+		res
+			.status(500)
+			.json({ message: 'Error checking serial number', error: error.message });
+	}
 });
 
-router.get("/allCustomerPartNumber", async (req, res) => {
-  try {
-    // Query to get only the customerPartNumber field from all entries
-    const results = await HydroTest.find({}, "htmfNo");
-    console.log("Customer Part Numbers:", results);
-    res.status(200).json(results); // Send the results as a JSON response
-  } catch (err) {
-    console.error("Error fetching customer part numbers:", err);
-    res.status(500).json({ error: "Failed to fetch customer part numbers" });
-  }
+router.get('/allhtmfwelder', async (req, res) => {
+	try {
+		// Query to get only the customerPartNumber field from all entries
+		const allhtmf = await HydroTest.find({}, 'htmfNo');
+		const allwelder = await Welder.find({}, 'welderCode');
+		console.log('Customer Part Numbers:', {
+			allhtmf: { ...allhtmf },
+			allwelder: { ...allwelder },
+		});
+		res.status(200).json({
+			allhtmf: allhtmf,
+			allwelder: allwelder,
+		}); // Send the results as a JSON response
+	} catch (err) {
+		console.error('Error fetching customer part numbers:', err);
+		res.status(500).json({ error: 'Failed to fetch customer part numbers' });
+	}
 });
 
 router.get("/ht/:id", async (req, res) => {

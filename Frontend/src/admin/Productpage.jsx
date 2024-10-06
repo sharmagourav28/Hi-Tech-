@@ -1,6 +1,7 @@
 import React from "react";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
+import Dashboard from "../comp/Dashboard";
 const Productpage = () => {
   return (
     <div>
@@ -18,6 +19,7 @@ const Productpage = () => {
             {/* Adjust ml-64 to match the width of the sidebar */}
             <h1 className="text-2xl font-bold">Products Page Content</h1>
             <p>Render your main content here...</p>
+
           </div>
         </div>
       </div>

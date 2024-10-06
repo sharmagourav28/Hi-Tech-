@@ -6,13 +6,15 @@ const Welder = require("../models/Welder"); // Import the Welder model
 
 // Save hydro test data
 exports.saveHydroData = async (req, res) => {
+  
   try {
-    const hydroData = new Hydro(req.body);
-    await hydroData.save();
-    res.status(201).json({ message: "Data saved successfully" });
-  } catch (error) {
-    res.status(500).json({ message: "Error saving data", error });
-  }
+		const hydroData = new Hydro(req.body);
+		const t = await hydroData.save();
+		res.status(201).json({ message: 'Data saved successfully' });
+	} catch (error) {
+		console.log(error);
+		res.status(500).json({ message: 'Error saving dataa', error });
+	}
 };
 
 // Fetch all hydro test data
