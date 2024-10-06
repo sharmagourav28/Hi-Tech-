@@ -15,78 +15,81 @@ const WelderFormAndTable = () => {
 
   // Fetch existing data from the database
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:5000/api/hydro/welders"
-        ); // Adjust the endpoint as needed
-        if (Array.isArray(response.data)) {
-          setData(response.data);
-        } else {
-          console.error("Data is not an array:", response.data);
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        toast.error("Failed to fetch data.");
-      }
-    };
-    fetchData();
-  }, []);
+		const fetchData = async () => {
+			try {
+				const response = await axios.get(
+					'http://localhost:5000/api/hydro/welders',
+				); // Adjust the endpoint as needed
+				if (Array.isArray(response.data)) {
+					setData(response.data);
+				} else {
+					console.error('Data is not an array:', response.data);
+				}
+			} catch (error) {
+				console.error('Error fetching data:', error);
+				toast.error('Failed to fetch data.');
+			}
+		};
+		fetchData();
+	}, [data]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log("Submit clicked");
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		console.log('Submit clicked');
 
-    if (!welderName || !welderCode) {
-      toast.warn("Please fill out all fields.");
-      return;
-    }
+		if (!welderName || !welderCode) {
+			toast.warn('Please fill out all fields.');
+			return;
+		}
 
-    const newRecord = { welderName, welderCode };
-    console.log("Submitting: ", newRecord);
+		const newRecord = { welderName, welderCode };
+		console.log('Submitting: ', newRecord);
 
-    try {
-      // Post data to your backend API
-      const response = await axios.post(
-        "http://localhost:5000/api/hydro/welders",
-        newRecord
-      );
-      console.log("Response: ", response.data);
+		try {
+			// Post data to your backend API
+			const response = await axios.post(
+				'http://localhost:5000/api/hydro/welders',
+				newRecord,
+			);
 
-      // Update the local state with the new record
-      setData([...data, response.data]);
+			// Update the local state with the new record
+			setData([...data, response.data]);
+			console.log('Response: ', response.data);
 
-      // Show success notification
-      toast.success("Welder information submitted successfully!");
+			// Show success notification
+			toast.success('Welder information submitted successfully!');
 
-      // Clear form fields
-      setWelderName("");
-      setWelderCode("");
-    } catch (error) {
-      console.error("Error submitting data:", error);
-      toast.error("Failed to submit welder information.");
-    }
-  };
+			// Clear form fields
+			setWelderName('');
+			setWelderCode('');
+		} catch (error) {
+			console.error('Error submitting data:', error);
+			toast.error('Failed to submit welder information.');
+		}
+	};
 
-  const handleDelete = async (id) => {
-    try {
-      await axios.delete(`http://localhost:5000/api/hydro/welders/${id}`); // Adjust the endpoint as needed
+	const handleDelete = async (id) => {
+		try {
+			await axios.delete(`http://localhost:5000/api/hydro/welders/${id}`); // Adjust the endpoint as needed
 
-      // Update the local state by filtering out the deleted welder
-      setData(data.filter((record) => record._id !== id));
+			// Update the local state by filtering out the deleted welder
+			setData(data.filter((record) => record._id !== id));
 
-      // Show success notification
-      toast.success("Welder deleted successfully!");
-    } catch (error) {
-      console.error("Error deleting welder:", error);
-      toast.error("Failed to delete welder.");
-    }
-  };
+			// Show success notification
+			toast.success('Welder deleted successfully!');
+		} catch (error) {
+			console.error('Error deleting welder:', error);
+			toast.error('Failed to delete welder.');
+		}
+	};
 
-  // Sort the data array by welderName in ascending order
-  const sortedData = [...data].sort((a, b) =>
-    a.welderName.localeCompare(b.welderName)
-  );
+	// Sort the data array by welderName in ascending order
+	const sortedData = [...data].sort((a, b) => {
+		const nameA = a.welderName || ''; // Use empty string if welderName is undefined
+		const nameB = b.welderName || ''; // Use empty string if welderName is undefined
+
+		return nameA.localeCompare(nameB);
+	});
 
   // Pagination logic
   const indexOfLastRecord = currentPage * recordsPerPage;
