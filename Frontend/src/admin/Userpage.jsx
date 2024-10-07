@@ -11,7 +11,6 @@ const Userpage = () => {
         {/* Main content area below the Navbar */}
         <div className="flex flex-grow">
           {/* Sidebar on the left */}
-          <Sidebar />
 
           {/* Main content to the right of the sidebar */}
           <div className="flex-grow bg-white p-8 ml-64 mt-16">
