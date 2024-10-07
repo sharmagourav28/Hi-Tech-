@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
+import Dashboard from "../comp/Dashboard";
 
 const Userpage = () => {
   return (
@@ -16,6 +17,7 @@ const Userpage = () => {
           {/* Main content to the right of the sidebar */}
           <div className="flex-grow bg-white p-8 ml-64 mt-16">
             {/* Adjust ml-64 to match the width of the sidebar */}
+            <Dashboard />
           </div>
         </div>
       </div>

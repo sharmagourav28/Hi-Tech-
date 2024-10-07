@@ -10,6 +10,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Paneladmin from "./Paneladmin";
 
 const Login = () => {
   const [userId, setUserId] = useState("");
@@ -31,7 +32,7 @@ const Login = () => {
         toast.success(`Successfully logged in as ${selectedRole}!`); // Success notification
         const roleRoutes = {
           hydro: "/hydro",
-          admin: "/dashboard",
+          admin: "/paneladmin",
           pdi: "/pdi",
         };
 

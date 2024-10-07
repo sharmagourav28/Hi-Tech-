@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Header from "./Header";
-import Footer from "./Footer";
+
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import * as XLSX from "xlsx"; // Import the XLSX library for Excel export
@@ -60,7 +59,6 @@ const Admin = () => {
 
   return (
     <>
-      <Header />
       <div className="p-6 pt-10 bg-gray-50 min-h-screen w-full ">
         <h2 className="text-4xl font-extrabold mb-8 text-center text-indigo-800">
           Hydro Test Records
@@ -197,7 +195,6 @@ const Admin = () => {
           ))}
         </div>
       </div>
-      <Footer />
       <ToastContainer /> {/* This renders the toast messages */}
     </>
   );

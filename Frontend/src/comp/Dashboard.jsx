@@ -6,14 +6,11 @@ import {
   FaClipboardCheck,
   FaWater,
 } from "react-icons/fa";
-import Header from "./Header";
+
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-import Admin from "./admin";
-import RecordHydro from "./RecordHydro";
-import WelderFormAndTable from "./Welder";
 
 const Dashboard = () => {
   const [stats, setStats] = useState({
@@ -117,7 +114,6 @@ const Dashboard = () => {
   return (
     <>
       <div className="p-6 mt-20 bg-gray-50 min-h-screen">
-        <Header />
         <h1 className="text-4xl font-bold mb-6 text-center text-gray-800 mt-10">
           Admin Dashboard
         </h1>
@@ -315,10 +311,6 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-      <WelderFormAndTable />
-      <RecordHydro />
-
-      <Admin />
 
       <ToastContainer />
     </>

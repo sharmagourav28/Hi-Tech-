@@ -17,6 +17,7 @@ import Pdipage from "./admin/Pdipage.jsx";
 import Hydropage from "./admin/Hydropage.jsx";
 import Userpage from "./admin/Userpage.jsx";
 import Productpage from "./admin/Productpage.jsx";
+import Welderpage from "./admin/Welderpage.jsx";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -38,6 +39,7 @@ function App() {
         <Route path="/hydropage" element={<Hydropage />} />
         <Route path="/userpage" element={<Userpage />} />
         <Route path="/productpage" element={<Productpage />} />
+        <Route path="/welderpage" element={<Welderpage />} />
       </Routes>
       {/* <Footer /> */}
     </Router>
