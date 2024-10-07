@@ -116,8 +116,10 @@ const Mainpage = () => {
                       <div className="w-3/12">user{index + 1}</div>
                       <div className="w-3/12">Role {index + 1}</div>
                       <div className="w-2/12 text-center">
-                        <button className="text-red-600 hover:text-red-800 p-1 rounded border border-red-600 hover:bg-red-600 hover:text-white transition duration-200">
-                          <i className="fas fa-trash"></i> {/* Delete Icon */}
+                        <button className="text-red-600 hover:text-white p-1 rounded border border-red-600 hover:bg-red-600 transition duration-200 ease-in-out flex items-center">
+                          <i className="fas fa-trash mr-1"></i>{" "}
+                          {/* Delete Icon */}
+                          Remove
                         </button>
                       </div>
                     </div>
