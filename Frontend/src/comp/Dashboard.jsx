@@ -113,14 +113,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <div className="p-6 mt-20 bg-gray-50 min-h-screen">
-        <h1 className="text-4xl font-bold mb-6 text-center text-gray-800 mt-10">
-          Admin Dashboard
-        </h1>
-        <p className="text-lg text-gray-600 mb-8 text-center">
-          Welcome back, Admin. Here are the current system statistics:
-        </p>
-
+      <div className="p-6  min-h-screen">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {Object.entries(stats).map(([key, value]) => {
             const icons = {
@@ -147,9 +140,9 @@ const Dashboard = () => {
           })}
         </div>
 
-        <div className="flex flex-wrap mt-6">
+        <div className="mt-6">
           {/* User List */}
-          <div className="flex-1 w-full md:w-1/2 bg-white rounded-lg shadow-lg p-4 mt-6 overflow-x-auto">
+          <div className="bg-white rounded-lg shadow-lg p-4 mt-6 overflow-x-auto">
             <h2 className="text-2xl font-bold text-center mb-4">HITech User</h2>
             <table className="min-w-full bg-white border border-gray-200 rounded-lg">
               <thead className="bg-gray-100">
@@ -222,7 +215,7 @@ const Dashboard = () => {
           </div>
 
           {/* User Creation Form */}
-          <div className="flex-1 w-full md:w-1/2 bg-white rounded-lg shadow-lg p-6 mt-6">
+          <div className="bg-white rounded-lg shadow-lg p-6 mt-6">
             <h2 className="text-2xl font-bold text-center mb-4">
               Create New User
             </h2>

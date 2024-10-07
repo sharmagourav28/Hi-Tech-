@@ -96,8 +96,9 @@ const RecordHydro = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div className="flex p-6 bg-gray-100 min-h-screen">
-      <div className="w-2/3 pr-4">
+    <div className="flex flex-col p-6 bg-gray-100 min-h-screen">
+      {/* Hydro Test Records Section */}
+      <div className="w-full mb-8">
         <h2 className="text-xl font-bold mb-4">Hydro Test Records</h2>
         <div>
           <table className="min-w-full border border-gray-300 overflow-hidden max-w-full">
@@ -149,29 +150,25 @@ const RecordHydro = () => {
             <button
               onClick={() => paginate(currentPage - 1)}
               disabled={currentPage === 1}
-              className={`px-4 py-2 text-white rounded-md transition duration-300 
-      ${
-        currentPage === 1
-          ? "bg-gray-400 cursor-not-allowed"
-          : "bg-blue-500 hover:bg-blue-600"
-      }`}
+              className={`px-4 py-2 text-white rounded-md transition duration-300 ${
+                currentPage === 1
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-blue-500 hover:bg-blue-600"
+              }`}
             >
               Previous
             </button>
-
             <p>
               Page {currentPage} of {totalPages}
             </p>
-
             <button
               onClick={() => paginate(currentPage + 1)}
               disabled={currentPage === totalPages}
-              className={`px-4 py-2 text-white rounded-md transition duration-300 
-      ${
-        currentPage === totalPages
-          ? "bg-gray-400 cursor-not-allowed"
-          : "bg-blue-500 hover:bg-blue-600"
-      }`}
+              className={`px-4 py-2 text-white rounded-md transition duration-300 ${
+                currentPage === totalPages
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-blue-500 hover:bg-blue-600"
+              }`}
             >
               Next
             </button>
@@ -179,7 +176,8 @@ const RecordHydro = () => {
         </div>
       </div>
 
-      <div className="w-1/3 pl-4">
+      {/* Record Hydro Test Section */}
+      <div className="w-full">
         <h2 className="text-xl font-bold mb-4">Record Hydro Test</h2>
         <form
           onSubmit={handleSubmit}
