@@ -11,6 +11,13 @@ const hydroTestSchema = new mongoose.Schema({
   flangeThickness: { type: String, required: true }, // New field
   materialGrade: { type: String, required: true }, // New field
   createdAt: { type: Date, default: Date.now },
-});
+  selectedParameters: {
+    type: [{
+        parameter: { type: String },
+        specification: { type: String },
+        method: { type: String },
+    }],
+    required: true,
+},});
 
 module.exports = mongoose.model("HydroTest", hydroTestSchema);
