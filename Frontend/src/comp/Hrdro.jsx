@@ -271,12 +271,13 @@ const Hydro = () => {
   return (
     <>
       <Header />
-      <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 mt-20">
+      <div className="min-h-screen bg-blue-50 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 mt-20">
         <div className="w-full max-w-7xl mx-auto">
-          <div className="bg-white shadow-lg sm:rounded-lg px-8 py-10">
-            <h1 className="text-3xl font-bold text-center mb-8">
-              Hydro Test Form
+          <div className="bg-gradient-to-r from-gray-200 via-gray-200 to-gray-200 shadow-2xl sm:rounded-2xl px-10 py-12 border border-gray-200 rounded-lg mx-auto">
+            <h1 className="text-4xl font-extrabold text-center text-orange-600 mb-8 tracking-wide uppercase font-poppins ">
+              Hi-Tech Metal Hydro Test
             </h1>
+
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Section: Test Information */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -284,10 +285,11 @@ const Hydro = () => {
                 <div>
                   <label
                     htmlFor="testDate"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-800 to-indigo-600 tracking-wider  "
                   >
                     Test Date
                   </label>
+
                   <input
                     required
                     type="date"
@@ -303,10 +305,11 @@ const Hydro = () => {
                 <div>
                   <label
                     htmlFor="serialNumber"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-800 to-indigo-600 tracking-wider "
                   >
                     Serial Number
                   </label>
+
                   <input
                     type="text"
                     name="serialNumber"
@@ -324,7 +327,7 @@ const Hydro = () => {
                 <div className="relative">
                   <label
                     htmlFor="htmfPartNumber"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-800 to-indigo-600 tracking-wider "
                   >
                     HTMF Part Number
                   </label>
@@ -380,7 +383,7 @@ const Hydro = () => {
                 <div>
                   <label
                     htmlFor="customerPartNumber"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-800 to-indigo-600 tracking-wider  "
                   >
                     Customer Part Number
                   </label>
@@ -402,7 +405,7 @@ const Hydro = () => {
                 <div>
                   <label
                     htmlFor="type"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-800 to-indigo-600 tracking-wider  "
                   >
                     Type
                   </label>
@@ -421,7 +424,7 @@ const Hydro = () => {
                 <div>
                   <label
                     htmlFor="capacityVolume"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-800 to-indigo-600 tracking-wider  "
                   >
                     Capacity/Volume
                   </label>
@@ -440,7 +443,7 @@ const Hydro = () => {
                 <div>
                   <label
                     htmlFor="hydroPressure"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-800 to-indigo-600 tracking-wider "
                   >
                     Hydro Pressure (Bar)
                   </label>
@@ -464,7 +467,7 @@ const Hydro = () => {
                 <div>
                   <label
                     htmlFor="startTime"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-800 to-indigo-600 tracking-wider "
                   >
                     Start Time
                   </label>
@@ -495,7 +498,7 @@ const Hydro = () => {
                 <div>
                   <label
                     htmlFor="endTime"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-800 to-indigo-600 tracking-wider "
                   >
                     End Time
                   </label>
@@ -526,28 +529,32 @@ const Hydro = () => {
               <div className="p-4">
                 <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-2">
                   {/* Main Heading */}
-                  <div className="col-span-2 sm:col-span-4 md:col-span-7 text-center font-bold text-lg py-2">
+                  <div className="col-span-2 sm:col-span-4 md:col-span-7 text-center font-bold text-lg py-2 text-transparent bg-clip-text bg-gradient-to-r from-indigo-800 to-indigo-500">
                     WELDER CODE
                   </div>
 
                   {/* Sub Headings */}
-                  <div className="text-center font-semibold py-2">
+                  <div className="text-center font-bold py-2 text-transparent bg-clip-text bg-gradient-to-r from-indigo-800 to-indigo-500">
                     Long Root
                   </div>
-                  <div className="text-center font-semibold py-2">
+                  <div className="text-center font-bold py-2 text-transparent bg-clip-text bg-gradient-to-r from-indigo-800 to-indigo-500">
                     Long Final
                   </div>
-                  <div className="text-center font-semibold py-2">
+                  <div className="text-center font-bold py-2 text-transparent bg-clip-text bg-gradient-to-r from-indigo-800 to-indigo-500">
                     Round Root
                   </div>
-                  <div className="text-center font-semibold py-2">
+                  <div className="text-center font-bold py-2 text-transparent bg-clip-text bg-gradient-to-r from-indigo-800 to-indigo-500">
                     Round Final
                   </div>
-                  <div className="text-center font-semibold py-2">Sockets</div>
-                  <div className="text-center font-semibold py-2">
+                  <div className="text-center font-bold py-2 text-transparent bg-clip-text bg-gradient-to-r from-indigo-800 to-indigo-500">
+                    Sockets
+                  </div>
+                  <div className="text-center font-bold py-2 text-transparent bg-clip-text bg-gradient-to-r from-indigo-800 to-indigo-500">
                     Attachment
                   </div>
-                  <div className="text-center font-semibold py-2">Rework</div>
+                  <div className="text-center font-semibold py-2 text-transparent bg-clip-text bg-gradient-to-r from-indigo-800 to-indigo-500">
+                    Rework
+                  </div>
 
                   {/* Dropdowns */}
                   {Array(6)
@@ -587,7 +594,7 @@ const Hydro = () => {
                 <div>
                   <label
                     htmlFor="materialGrade"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-800 to-indigo-600 tracking-wider "
                   >
                     Material Grade
                   </label>
@@ -606,7 +613,7 @@ const Hydro = () => {
                 <div>
                   <label
                     htmlFor="operator"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-800 to-indigo-600 tracking-wider  "
                   >
                     Operator Code
                   </label>
@@ -625,7 +632,7 @@ const Hydro = () => {
                 <div>
                   <label
                     htmlFor="witnessBay"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-800 to-indigo-600 tracking-wider  "
                   >
                     Witness Bay
                   </label>
@@ -647,7 +654,7 @@ const Hydro = () => {
 
                 {/* Cap Thickness */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-800 to-indigo-600 tracking-wider  ">
                     Shell Thickness
                   </label>
                   <input
@@ -659,7 +666,7 @@ const Hydro = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-800 to-indigo-600 tracking-wider  ">
                     Cap Thickness
                   </label>
                   <input
@@ -673,7 +680,7 @@ const Hydro = () => {
 
                 {/* Flange Thickness */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-800 to-indigo-600 tracking-wider  ">
                     Flange Thickness
                   </label>
                   <input
@@ -692,7 +699,7 @@ const Hydro = () => {
                 <div>
                   <label
                     htmlFor="passFail"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-800 to-indigo-600 tracking-wider  "
                   >
                     Result (Pass/Fail)
                   </label>
@@ -715,7 +722,7 @@ const Hydro = () => {
               <div>
                 <button
                   type="submit"
-                  className="w-full py-3 px-4 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full py-3 px-4 bg-ora-600 text-white font-semibold rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 >
                   Generate Certificate
                 </button>

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Header from "./Header";
-import Footer from "./Footer";
 
 // Function to check serial number against the backend
 const checkSerialNumber = async (serialNumber) => {
@@ -68,65 +67,95 @@ const Pdi = () => {
       <Header />
       <div className="flex items-center justify-center p-12 mt-20">
         <div className="mx-auto w-full max-w-[550px] mt-12">
+          {" "}
+          {/* Added bg-yellow-200 */}
           {/* Heading for the form */}
-          <h2 className="mb-6 text-center text-2xl font-bold text-[#07074D]">
-            PDI Test
+          <h2 className="text-4xl font-extrabold text-center text-orange-600 mb-8 tracking-wide uppercase font-poppins ">
+            Hi-Tech Metal Pdi Test
           </h2>
           <form onSubmit={handleSubmit}>
-            {/* Test Date */}
-            <div className="mb-5">
-              <label
-                htmlFor="testDate"
-                className="mb-3 block text-base font-medium text-[#07074D]"
-              >
-                Test Date
-              </label>
-              <input
-                type="date"
-                name="testDate"
-                id="testDate"
-                value={testDate}
-                onChange={(e) => setTestDate(e.target.value)}
-                className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-              />
-            </div>
+            {/* Form Fields Container */}
+            <div className="flex flex-wrap mb-5 gap-4">
+              {/* Test Date */}
+              <div className="flex-grow">
+                <label
+                  htmlFor="testDate"
+                  className="mb-3 block text-base font-medium text-[#07074D]"
+                >
+                  Test Date
+                </label>
+                <input
+                  type="date"
+                  name="testDate"
+                  id="testDate"
+                  value={testDate}
+                  onChange={(e) => setTestDate(e.target.value)}
+                  className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                />
+              </div>
 
-            {/* Serial Number */}
-            <div className="mb-5 relative">
-              <label
-                htmlFor="serialNumber"
-                className="mb-2 block text-base font-medium text-[#07074D]"
-              >
-                Serial Number (12 Digits)
-              </label>
-              <div className="flex items-center">
+              {/* Serial Number */}
+              <div className="flex-grow relative">
+                <label
+                  htmlFor="serialNumber"
+                  className="mb-2 block text-base font-medium text-[#07074D]"
+                >
+                  Serial Number (12 Digits)
+                </label>
+                <div className="flex items-center">
+                  <input
+                    type="text"
+                    name="serialNumber"
+                    id="serialNumber"
+                    value={serialNumber}
+                    onChange={(e) =>
+                      setSerialNumber(e.target.value.toUpperCase())
+                    } // Convert to uppercase
+                    maxLength={14} // Set max length to 12
+                    pattern="^[A-Z0-9]{14}$" // Restrict to exactly 12 uppercase letters/numbers
+                    required // Make this field required
+                    className="flex-grow rounded-l-md border border-[#e0e0e0] bg-white py-3 px-4 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md mt-1"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleCheck}
+                    className="rounded-r-md bg-[#6A64F1] py-3 px-6 text-base font-semibold text-white hover:bg-[#5A54D1] focus:outline-none focus:ring-2 focus:ring-[#6A64F1] focus:ring-opacity-50"
+                  >
+                    Check
+                  </button>
+                </div>
+              </div>
+
+              {/* Customer Part Number */}
+              <div className="flex-grow">
+                <label
+                  htmlFor="customerPartNumber"
+                  className="mb-3 block text-base font-medium text-[#07074D]"
+                >
+                  Customer Part Number
+                </label>
                 <input
                   type="text"
-                  name="serialNumber"
-                  id="serialNumber"
-                  value={serialNumber}
-                  onChange={(e) =>
-                    setSerialNumber(e.target.value.toUpperCase())
-                  } // Convert to uppercase
-                  maxLength={12} // Set max length to 12
-                  pattern="^[A-Z0-9]{12}$" // Restrict to exactly 12 uppercase letters/numbers
-                  required // Make this field required
-                  className="flex-grow rounded-l-md border border-[#e0e0e0] bg-white py-3 px-4 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                  name="customerPartNumber"
+                  id="customerPartNumber"
+                  value={customerPartNumber}
+                  onChange={(e) => setCustomerPartNumber(e.target.value)}
+                  placeholder="Enter customer part number"
+                  className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                 />
-                <button
-                  type="button"
-                  onClick={handleCheck}
-                  className="rounded-r-md bg-[#6A64F1] py-3 px-6 text-base font-semibold text-white hover:bg-[#5A54D1] focus:outline-none focus:ring-2 focus:ring-[#6A64F1] focus:ring-opacity-50"
-                >
-                  Check
-                </button>
               </div>
             </div>
 
             {/* Check Status */}
             {checkStatus && (
-              <div className="mb-5 text-center text-base font-medium text-[#07074D]">
-                Status: {checkStatus}
+              <div className="mb-5 text-center text-base font-medium">
+                <span
+                  className={`${
+                    checkStatus === "Pass" ? "text-green-500" : "text-red-600"
+                  }`}
+                >
+                  Status: Hydro Test {checkStatus}
+                </span>
               </div>
             )}
             {/* Error Message */}
@@ -136,59 +165,10 @@ const Pdi = () => {
               </div>
             )}
 
-            {/* Remark */}
-            <div className="mb-5">
-              <label
-                htmlFor="remark"
-                className="mb-3 block text-base font-medium text-[#07074D]"
-              >
-                Remarks
-              </label>
-              <textarea
-                name="remark"
-                id="remark"
-                value={remark}
-                onChange={(e) => setRemark(e.target.value)}
-                placeholder="Add any remarks"
-                className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-              />
-            </div>
-
-            {/* Customer Part Number */}
-            <div className="mb-5">
-              <label
-                htmlFor="customerPartNumber"
-                className="mb-3 block text-base font-medium text-[#07074D]"
-              >
-                Customer Part Number
-              </label>
-              <input
-                type="text"
-                name="customerPartNumber"
-                id="customerPartNumber"
-                value={customerPartNumber}
-                onChange={(e) => setCustomerPartNumber(e.target.value)}
-                placeholder="Enter customer part number"
-                className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-              />
-            </div>
-
             {/* Generate Certificate Button */}
-            <div>
-              <button
-                type="submit"
-                className={`hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none ${
-                  isButtonEnabled ? "" : "opacity-50 cursor-not-allowed"
-                }`}
-                disabled={!isButtonEnabled} // Disable button if conditions aren't met
-              >
-                Generate Certificate
-              </button>
-            </div>
           </form>
         </div>
       </div>
-      <Footer />
     </>
   );
 };
