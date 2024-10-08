@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hydro Test Certificate</title>
+    <link rel="stylesheet" href="certificate.css">
+</head>
+<body>
+    <!-- Certificate Layout -->
+    <div id="certificate" class="certificate">
+        <header>
+            <img src="logo.png" alt="Company Logo" class="logo">
+            <h1 class="main-title">Hi-Tech Metal Formings(I) Indore</h1>
+            <hr>
+            <h1>Hydro Test Certificate</h1>
+        </header>
+
+        <!-- Certificate Information -->
+        <div class="certificate-info">
+            <div class="info-row">
+                <div class="info-item">
+                    <strong>Certificate No:</strong> <span id="certificateNo" class="underline"></span>
+                </div>
+                <div class="info-item">
+                    <strong>Date of Test:</strong> <span id="dateOfTest" class="underline"></span>
+                </div>
+                <div class="info-item">
+                    <strong>Type of Vessel:</strong> <span id="typeOfVessel" class="underline"></span>
+                </div>
+                <div class="info-item">
+                    <strong>Customer Name:</strong> <span id="customerName" class="underline"></span>
+                </div>
+            </div>
+            <div class="info-row">
+                <div class="info-item">
+                    <strong>Test Start Time:</strong> <span id="testStartTime" class="underline"></span>
+                </div>
+                <div class="info-item">
+                    <strong>Test End Time:</strong> <span id="testEndTime" class="underline"></span>
+                </div>
+                <div class="info-item">
+                    <strong>Capacity:</strong> <span id="capacity" class="underline"></span>
+                </div>
+                <div class="info-item">
+                    <strong>Year of Manufacture:</strong> <span id="yearOfManufacture" class="underline"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Technical Details -->
+        <div class="section">
+            <h2>Technical Details</h2>
+            <div class="info-row">
+                <div class="info-item"><strong>Shell Thickness:</strong> <span id="shellThickness" class="underline"></span></div>
+                <div class="info-item"><strong>Material of Shell:</strong> <span id="materialOfShell" class="underline"></span></div>
+                <div class="info-item"><strong>Plate Thickness 1:</strong> <span id="plateThickness1" class="underline"></span></div>
+                <div class="info-item"><strong>Material of Plate 1:</strong> <span id="materialOfPlate1" class="underline"></span></div>
+            </div>
+            <div class="info-row">
+                <div class="info-item"><strong>Plate Thickness 2:</strong> <span id="plateThickness2" class="underline"></span></div>
+                <div class="info-item"><strong>Material of Plate 2:</strong> <span id="materialOfPlate2" class="underline"></span></div>
+                <div class="info-item"><strong>Hydro Test Pressure:</strong> <span id="hydroTestPressure" class="underline"></span></div>
+                <div class="info-item"><strong>Test Medium:</strong> <span id="testMedium" class="underline"></span></div>
+            </div>
+            <div class="info-row">
+                <div class="info-item"><strong>Pressure Gauge ID:</strong> <span id="pressureGaugeID" class="underline"></span></div>
+                <div class="info-item"><strong>Calibration Certificate No:</strong> <span id="calibrationCertificateNo" class="underline"></span></div>
+                <div class="info-item"><strong>Calibration Due Date:</strong> <span id="calibrationDueDate" class="underline"></span></div>
+            </div>
+        </div>
+
+        <!-- Welding and Inspection Details -->
+        <div class="section">
+            <h2>Welding and Inspection Details</h2>
+            <div class="info-row">
+                <div class="info-item"><strong>Welding Details:</strong> <span id="weldingDetails" class="underline"></span></div>
+                <div class="info-item"><strong>Welding Rods Used:</strong> <span id="weldingRodsUsed" class="underline"></span></div>
+                <div class="info-item"><strong>Welder Code (L & C Seam Root):</strong> <span id="welderCode" class="underline"></span></div>
+                <div class="info-item"><strong>Weld Test:</strong> <span id="weldTest" class="underline"></span></div>
+            </div>
+        </div>
+
+        <!-- Visual Observations -->
+        <div class="section">
+            <h2>Visual Observations</h2>
+            <div class="info-row">
+                <div class="info-item"><strong>Sweating or Leak on Weld Joints:</strong> <span id="sweatingLeak" class="underline"></span></div>
+                <div class="info-item"><strong>Sudden Loss of Pressure:</strong> <span id="pressureLoss" class="underline"></span></div>
+                <div class="info-item"><strong>Check Structural Distortion:</strong> <span id="structuralDistortion" class="underline"></span></div>
+            </div>
+        </div>
+            <br>
+            <br>
+            <br>
+            <br>
+
+        <!-- Footer -->
+        <footer>
+            <h3>ALL WELDERS ARE QUALIFIED AS PER ASME</h3>
+            <p>
+                This is to certify that the pressure vessel built as per the specification mentioned above & was tested as per drawing, maintained pressure with 30 minutes holding time and the welded area at this pressure were visually inspected, it was found to be thoroughly sound under the test.
+            </p>
+            <br>
+            <br>
+            <br>
+            <br>
+           
+
+            <img src="pngegg.png" alt="signature" class="signature">
+
+            <div class="info-row">
+                <div class="info-item">
+                    <strong>Test Witnessed By:</strong> <span id="testWitnessedBy" class="underline"></span>
+                </div>
+                <div class="info-item">
+                    <strong>Inspection By:</strong> <span id="inspectionBy" class="underline"></span>
+                </div>
+                <div class="info-item">
+                    <strong>Date:</strong> <span id="inspectionDate" class="underline"></span>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <button onclick="generatePDF()">Download as PDF</button>
+
+    <!-- Include jsPDF and html2canvas libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.0/jspdf.umd.min.js"></script>
+    <script src="certificate.js"></script>
+</body>
+</html>
