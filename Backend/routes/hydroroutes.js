@@ -41,7 +41,6 @@ router.get("/check/:serialNumber", async (req, res) => {
 
     const hydroData = await Hydro.findOne({ serialNumber });
 
-    console.log(hydroData);
     if (!hydroData) {
       return res.status(404).json({ message: "Record not found" });
     }
@@ -60,10 +59,7 @@ router.get("/allhtmfwelder", async (req, res) => {
     // Query to get only the customerPartNumber field from all entries
     const allhtmf = await HydroTest.find({}, "htmfNo");
     const allwelder = await Welder.find({}, "welderCode");
-    console.log("Customer Part Numbers:", {
-      allhtmf: { ...allhtmf },
-      allwelder: { ...allwelder },
-    });
+   
     res.status(200).json({
       allhtmf: allhtmf,
       allwelder: allwelder,
@@ -76,9 +72,27 @@ router.get("/allhtmfwelder", async (req, res) => {
 
 router.get("/ht/:id", async (req, res) => {
   const { id } = req.params; // Get the ID from the request parameters
-
   try {
     const result = await HydroTest.findById(id); // Fetch the document by ID
+
+    if (result) {
+      res.status(200).json(result); // Send back the found document
+      console.log(result);
+    } else {
+      res.status(404).json({ message: "Item not found" }); // Handle not found case
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" }); // Handle server errors
+  }
+});
+
+
+router.get("/htmf/:id", async (req, res) => {
+  const { id } = req.params; // Get the ID from the request parameters
+  try {
+    const result = await HydroTest.findOne({htmfNo : id}); // Fetch the document by ID
+    console.log(result)
 
     if (result) {
       res.status(200).json(result); // Send back the found document

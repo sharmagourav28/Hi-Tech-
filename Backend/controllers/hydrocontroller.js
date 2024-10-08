@@ -10,6 +10,7 @@ exports.saveHydroData = async (req, res) => {
   try {
 		const hydroData = new Hydro(req.body);
 		const t = await hydroData.save();
+    console.log(t)
 		res.status(201).json({ message: 'Data saved successfully' });
 	} catch (error) {
 		console.log(error);
@@ -101,8 +102,9 @@ exports.createHydroTest = async (req, res) => {
     capThickness,
     flangeThickness,
     materialGrade,
+    selectedParameters,
   } = req.body;
-
+console.log(req.body)
   // Validation: Check for missing fields
   if (
     !htmfNo ||
@@ -129,6 +131,7 @@ exports.createHydroTest = async (req, res) => {
       capThickness,
       flangeThickness,
       materialGrade,
+      selectedParameters,
     });
 
     await newTest.save();
