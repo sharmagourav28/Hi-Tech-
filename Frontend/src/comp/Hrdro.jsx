@@ -274,7 +274,7 @@ const Hydro = () => {
       <div className="min-h-screen bg-blue-50 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 mt-20">
         <div className="w-full max-w-7xl mx-auto">
           <div className="bg-gradient-to-r from-gray-200 via-gray-200 to-gray-200 shadow-2xl sm:rounded-2xl px-10 py-12 border border-gray-200 rounded-lg mx-auto">
-            <h1 className="text-4xl font-extrabold text-center text-orange-600 mb-8 tracking-wide uppercase font-poppins ">
+            <h1 className="text-4xl font-extrabold text-center text--600 mb-8 tracking-wide uppercase font-poppins ">
               Hi-Tech Metal Hydro Test
             </h1>
 
@@ -722,7 +722,7 @@ const Hydro = () => {
               <div>
                 <button
                   type="submit"
-                  className="w-full py-3 px-4 bg-ora-600 text-white font-semibold rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full py-3 px-4 bg-red-600 text-white font-semibold rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 >
                   Generate Certificate
                 </button>

@@ -69,6 +69,14 @@ const WelderFormAndTable = () => {
   };
 
   const handleDelete = async (id) => {
+    const isConfirmed = window.confirm(
+      "Are you sure you want to delete this welder?"
+    );
+
+    if (!isConfirmed) {
+      return; // Exit if the user clicks "No"
+    }
+
     try {
       await axios.delete(`http://localhost:5000/api/hydro/welders/${id}`); // Adjust the endpoint as needed
 
@@ -104,56 +112,60 @@ const WelderFormAndTable = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div className="flex flex-col gap-8 p-8">
+    <div className="flex flex-col gap-8 p-8 min-h-screen ">
       {/* Form Section */}
-      <div className="w-full bg-white p-6 shadow-md rounded-lg">
-        <h2 className="text-2xl font-semibold text-gray-700 mb-4">
+      <div className="w-full bg-white p-6 shadow-lg rounded-lg border border-gray-200">
+        <h2 className="text-3xl font-bold text-gray-800 mb-6">
           Welder Information
         </h2>
         <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
           <label className="block">
-            <span className="text-gray-600">Welder Name</span>
+            <span className="text-gray-600 font-medium">Welder Name</span>
             <input
               type="text"
               value={welderName}
               onChange={(e) => setWelderName(e.target.value)}
               required
-              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"
+              className="mt-2 block w-full border border-gray-300 rounded-md shadow-sm p-3 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
               placeholder="Enter welder name"
             />
           </label>
           <label className="block">
-            <span className="text-gray-600">Welder Code</span>
+            <span className="text-gray-600 font-medium">Welder Code</span>
             <input
               type="text"
               value={welderCode}
               onChange={(e) => setWelderCode(e.target.value)}
               required
-              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"
+              className="mt-2 block w-full border border-gray-300 rounded-md shadow-sm p-3 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
               placeholder="Enter welder code"
             />
           </label>
           <button
             type="submit"
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg p-3 transition duration-300 ease-in-out"
+            className="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white font-semibold rounded-lg p-3 transition duration-300 ease-in-out"
           >
-            Submit
+            Add Welder
           </button>
         </form>
       </div>
 
       {/* Table Section */}
-      <div className="w-full bg-white p-6 shadow-md rounded-lg">
-        <h2 className="text-2xl font-semibold text-gray-700 mb-4">
+      <div className="w-full bg-white p-6 shadow-lg rounded-lg border border-gray-200">
+        <h2 className="text-3xl font-bold text-gray-800 mb-6">
           Welder Records
         </h2>
-        <table className="min-w-full table-auto">
-          <thead className="bg-gray-100">
+        <table className="min-w-full table-auto border border-gray-300">
+          <thead className="bg-blue-500 text-white">
             <tr>
-              <th className="border p-2 text-left">S.No</th>
-              <th className="border p-2 text-left">Welder Name</th>
-              <th className="border p-2 text-left">Welder Code</th>
-              <th className="border p-2 text-center">Actions</th>
+              <th className="border p-2 text-left font-semibold">S.No</th>
+              <th className="border p-2 text-left font-semibold">
+                Welder Name
+              </th>
+              <th className="border p-2 text-left font-semibold">
+                Welder Code
+              </th>
+              <th className="border p-2 text-center font-semibold">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -178,7 +190,7 @@ const WelderFormAndTable = () => {
               ))
             ) : (
               <tr>
-                <td colSpan="4" className="text-center p-4">
+                <td colSpan="4" className="text-center p-4 text-gray-500">
                   No records found.
                 </td>
               </tr>
@@ -187,19 +199,19 @@ const WelderFormAndTable = () => {
         </table>
 
         {/* Pagination Controls */}
-        <div className="flex justify-between items-center mt-4">
+        <div className="flex justify-between items-center mt-6">
           <button
             onClick={() => paginate(currentPage - 1)}
             disabled={currentPage === 1}
             className={`px-4 py-2 rounded-md transition duration-300 ease-in-out ${
               currentPage === 1
                 ? "bg-gray-300 text-gray-700 cursor-not-allowed"
-                : "bg-blue-500 hover:bg-blue-600 text-white"
+                : "bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white"
             }`}
           >
             Previous
           </button>
-          <p>
+          <p className="text-gray-700 font-semibold">
             Page {currentPage} of {totalPages}
           </p>
           <button
@@ -208,7 +220,7 @@ const WelderFormAndTable = () => {
             className={`px-4 py-2 rounded-md transition duration-300 ease-in-out ${
               currentPage === totalPages
                 ? "bg-gray-300 text-gray-700 cursor-not-allowed"
-                : "bg-blue-500 hover:bg-blue-600 text-white"
+                : "bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white"
             }`}
           >
             Next

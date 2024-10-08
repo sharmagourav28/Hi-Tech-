@@ -14,7 +14,7 @@ const checkSerialNumber = async (serialNumber) => {
     if (!response.ok) {
       throw new Error("Not Found");
     }
-    console.log("Edrr 3");
+
     const data = await response.json();
     return data.result; // Return the status from the response
   } catch (error) {
