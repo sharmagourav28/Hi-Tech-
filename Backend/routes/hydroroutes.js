@@ -38,13 +38,19 @@ router.delete("/welders/:id", deleteWelderById);
 router.get("/check/:serialNumber", async (req, res) => {
   try {
     const { serialNumber } = req.params;
+    const { customerPartNumber } = req.query; // Extract customerPartNumber from query
+    console.log("Customer Part Number:", customerPartNumber);
 
-    const hydroData = await Hydro.findOne({ serialNumber });
-
+    const hydroData = await Hydro.findOne({
+      serialNumber,
+      htmfPartNumber: customerPartNumber,
+    });
+    console.log(hydroData);
     if (!hydroData) {
       return res.status(404).json({ message: "Record not found" });
     }
 
+    // You can also check customerPartNumber here if necessary
     res.status(200).json({ result: hydroData.passFail });
   } catch (error) {
     console.error("Error checking serial number:", error);
@@ -59,7 +65,7 @@ router.get("/allhtmfwelder", async (req, res) => {
     // Query to get only the customerPartNumber field from all entries
     const allhtmf = await HydroTest.find({}, "htmfNo");
     const allwelder = await Welder.find({}, "welderCode");
-   
+
     res.status(200).json({
       allhtmf: allhtmf,
       allwelder: allwelder,
@@ -87,12 +93,11 @@ router.get("/ht/:id", async (req, res) => {
   }
 });
 
-
 router.get("/htmf/:id", async (req, res) => {
   const { id } = req.params; // Get the ID from the request parameters
   try {
-    const result = await HydroTest.findOne({htmfNo : id}); // Fetch the document by ID
-    console.log(result)
+    const result = await HydroTest.findOne({ htmfNo: id }); // Fetch the document by ID
+    console.log(result);
 
     if (result) {
       res.status(200).json(result); // Send back the found document
